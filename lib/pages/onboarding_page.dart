@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pind_app/widgets/primary_button.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -58,7 +59,7 @@ class OnboardingPage extends StatelessWidget {
                             fontSize: 14,
                             textColor: Theme.of(context).colorScheme.primary,
                             backgroundColor: Colors.white,
-                            onPressed: () {},
+                            onPressed: () => context.push('/sign-up'),
                           ),
                         ),
                         PrimaryButton(
@@ -66,7 +67,7 @@ class OnboardingPage extends StatelessWidget {
                           fontSize: 14,
                           textColor: Colors.white,
                           backgroundColor: Colors.transparent,
-                          onPressed: () {},
+                          onPressed: () => context.push('/sign-in'),
                         ),
                       ],
                     ),
