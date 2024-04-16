@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
+  figma_squircle: ^0.5.3
   flutter:
     sdk: flutter
   flutter_secure_storage: ^9.0.0

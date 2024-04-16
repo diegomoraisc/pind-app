@@ -105,7 +105,7 @@ class _SignInPageState extends State<SignInPage> {
                 left: 24,
               ),
               child: PrimaryButton(
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 height: 60,
                 text: "Entrar",
                 textColor: Colors.white,

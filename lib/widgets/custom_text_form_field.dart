@@ -56,6 +56,7 @@ class CustomTextFormField extends StatelessWidget {
             decoration: InputDecoration(
               suffixIcon: suffixIcon,
               helperText: helperText,
+              helperMaxLines: 3,
               hintText: hintText,
               hintStyle: Theme.of(context).textTheme.titleSmall,
               border: defaultBorder,

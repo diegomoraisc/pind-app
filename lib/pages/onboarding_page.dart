@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/widgets/primary_button.dart';
+import 'package:pind_app/widgets/primary_card.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -12,7 +12,7 @@ class OnboardingPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/onboarding-background.png"),
+            image: AssetImage("assets/images/onboarding-background.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -22,7 +22,7 @@ class OnboardingPage extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
+                horizontal: 18.0,
                 vertical: 25.0,
               ),
               child: Image.asset(
@@ -32,46 +32,19 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, bottom: 88),
+              padding: const EdgeInsets.only(
+                right: 32,
+                bottom: 40,
+                left: 32,
+              ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    "Gestão inteligente",
-                    style: Theme.of(context).textTheme.titleLarge,
+                  PrimaryCard(
+                    title: "Controle do seu estoque na palma da sua mão",
+                    description: "Comece agora mesmo!",
+                    onPressed: () => context.push('/sign-in'),
                   ),
-                  Text(
-                    "do seu",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Text(
-                    "Estoque",
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 35),
-                          child: PrimaryButton(
-                            text: "Junte-se a nós",
-                            fontSize: 14,
-                            textColor: Theme.of(context).colorScheme.primary,
-                            backgroundColor: Colors.white,
-                            onPressed: () => context.push('/sign-up'),
-                          ),
-                        ),
-                        PrimaryButton(
-                          text: "Entrar",
-                          fontSize: 14,
-                          textColor: Colors.white,
-                          backgroundColor: Colors.transparent,
-                          onPressed: () => context.push('/sign-in'),
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
