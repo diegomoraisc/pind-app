@@ -1,8 +1,9 @@
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/pages/onboarding_page.dart';
-import 'package:pind_app/pages/sign_in_page.dart';
-import 'package:pind_app/pages/sign_up_page.dart';
-import 'package:pind_app/pages/splash_page.dart';
+import 'package:pind_app/features/home/home_page.dart';
+import 'package:pind_app/features/onboarding/onboarding_page.dart';
+import 'package:pind_app/features/sign_in/sign_in_page.dart';
+import 'package:pind_app/features/sign_up/sign_up_page.dart';
+import 'package:pind_app/features/splash/splash_page.dart';
 
 final _router = GoRouter(
   initialLocation: '/splash',
@@ -22,6 +23,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/sign-up',
       builder: (context, state) => const SignUpPage(),
+    ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomePage(),
     ),
   ],
 );

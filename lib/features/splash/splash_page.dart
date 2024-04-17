@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pind_app/features/splash/splash_controller.dart';
+import 'package:pind_app/features/splash/splash_state.dart';
+import 'package:pind_app/locator.dart';
 import 'package:pind_app/widgets/custom_progress_indicator.dart';
 
 class SplashPage extends StatefulWidget {
@@ -10,13 +13,23 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  final _controller = getIt.get<SplashController>();
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      const Duration(seconds: 3),
+    _checkUserStatus();
+  }
+
+  Future<void> _checkUserStatus() async {
+    _controller.isUserLogged();
+    _controller.addListener(
       () {
-        context.go('/');
+        if (_controller.state is SplashSucessState) {
+          context.go('/home');
+        } else {
+          context.go('/');
+        }
       },
     );
   }

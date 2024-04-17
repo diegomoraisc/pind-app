@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pind_app/features/sign_in/sign_in_controller.dart';
+import 'package:pind_app/features/sign_in/sign_in_state.dart';
+import 'package:pind_app/locator.dart';
 import 'package:pind_app/widgets/custom_divider.dart';
 import 'package:pind_app/widgets/custom_inline_text_button.dart';
+import 'package:pind_app/widgets/custom_modal_bottom_sheet.dart';
+import 'package:pind_app/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/widgets/custom_text_button.dart';
 import 'package:pind_app/widgets/custom_text_form_field.dart';
 import 'package:pind_app/widgets/primary_button.dart';
@@ -16,9 +21,40 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
+  final _controller = getIt.get<SignInController>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool isHidden = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      if (_controller.state is SignInLoadingState) {
+        showDialog(
+          context: context,
+          builder: (ctx) => Center(
+            child: CustomProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        );
+      } else {
+        context.pop();
+      }
+      if (_controller.state is SignInSucessState) {
+        context.go('/home');
+      }
+      if (_controller.state is SignInErrorState) {
+        final error = _controller.state as SignInErrorState;
+        customModalBottomSheet(
+          context: context,
+          text: error.message,
+          bottomText: "Tente novamente",
+        );
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -113,7 +149,10 @@ class _SignInPageState extends State<SignInPage> {
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    const SnackBar(content: Text("Usuário logado!"));
+                    _controller.signIn(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
                   }
                 },
               ),

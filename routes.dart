@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/pages/onboarding_page.dart';
-import 'package:pind_app/pages/splash_page.dart';
+import 'package:pind_app/features/onboarding/onboarding_page.dart';
+import 'package:pind_app/features/splash/splash_page.dart';
 
 final _router = GoRouter(
   routes: [

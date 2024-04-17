@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pind_app/features/sign_up/sign_up_controller.dart';
+import 'package:pind_app/features/sign_up/sign_up_state.dart';
+import 'package:pind_app/locator.dart';
 import 'package:pind_app/widgets/custom_divider.dart';
 import 'package:pind_app/widgets/custom_inline_text_button.dart';
+import 'package:pind_app/widgets/custom_modal_bottom_sheet.dart';
+import 'package:pind_app/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/widgets/custom_text_form_field.dart';
 import 'package:pind_app/widgets/primary_button.dart';
 import 'package:pind_app/widgets/utils/validator.dart';
@@ -15,11 +20,42 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
+  final _controller = getIt.get<SignUpController>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool isPasswordHidden = true;
   bool isConfirmPasswordHidden = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      if (_controller.state is SignUpLoadingState) {
+        showDialog(
+          context: context,
+          builder: (ctx) => Center(
+            child: CustomProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        );
+      } else {
+        context.pop();
+      }
+      if (_controller.state is SignUpSucessState) {
+        context.go('/home');
+      }
+      if (_controller.state is SignUpErrorState) {
+        final error = _controller.state as SignUpErrorState;
+        customModalBottomSheet(
+          context: context,
+          text: error.message,
+          bottomText: 'Tente novamente',
+        );
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -135,8 +171,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 fontSize: 14,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    const SnackBar(
-                        content: Text("Usuário registrado com sucesso"));
+                    _controller.signUp(
+                      name: _nameController.text,
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
                   }
                 },
               ),

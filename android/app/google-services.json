@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "515393412831",
+    "project_id": "pind-app-3ed37",
+    "storage_bucket": "pind-app-3ed37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515393412831:android:7746a0af2ae0cbb8e1d36a",
+        "android_client_info": {
+          "package_name": "com.example.pind_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs_5TfV-mQwzCjmAol8dFqRjEf7xpyswM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
