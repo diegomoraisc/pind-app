@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>A utilização da galeria de fotos é necessaria para que o usuário possa atribuir uma foto de perfil dentro do aplicativo.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>A utilização da câmera é necessaria para que o usuário possa tirar uma foto e atribui-lá ao seu perfil dentro do aplicativo.</string>
 </dict>
 </plist>

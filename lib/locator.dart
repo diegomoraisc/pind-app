@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:pind_app/features/profile/profile_controller.dart';
 import 'package:pind_app/features/sign_in/sign_in_controller.dart';
 import 'package:pind_app/features/sign_up/sign_up_controller.dart';
 import 'package:pind_app/features/splash/splash_controller.dart';
@@ -26,6 +27,13 @@ void setup() {
 
   getIt.registerFactory<SignUpController>(
     () => SignUpController(
+      getIt.get<AuthService>(),
+      const SecureStorage(),
+    ),
+  );
+
+  getIt.registerFactory<ProfileController>(
+    () => ProfileController(
       getIt.get<AuthService>(),
       const SecureStorage(),
     ),
