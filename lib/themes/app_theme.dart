@@ -27,6 +27,7 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: const Color(0xFF3C7B2F),
         primary: const Color(0xFF3C7B2F),
+        secondary: const Color(0xFF509041),
         background: const Color(0xFF78B966),
         brightness: Brightness.light,
       ),

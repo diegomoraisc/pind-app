@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pind_app/features/customers/customers_page.dart';
-import 'package:pind_app/features/inventory/inventory_page.dart';
+import 'package:pind_app/features/inventory/inventory_page_view.dart';
 import 'package:pind_app/features/requests/requests_page.dart';
 import 'package:pind_app/features/profile/profile_page.dart';
 
@@ -62,12 +61,13 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.notifications),
           ),
         ],
+        elevation: currentPage == 0 ? 0 : 5,
       ),
       body: PageView(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          const InventoryPage(),
+          const InventoryPageView(),
           const RequestsPage(),
           const CustomersPage(),
           ProfilePage(
