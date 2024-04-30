@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class InventoryItem extends StatefulWidget {
   final String name;
   final double quantity;
+  final void Function(BuildContext) onEdit;
+  final void Function(BuildContext) onRemove;
   const InventoryItem({
     Key? key,
     required this.name,
     required this.quantity,
+    required this.onEdit,
+    required this.onRemove,
   }) : super(key: key);
 
   @override
@@ -42,15 +47,41 @@ class _InventoryItemState extends State<InventoryItem> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
+        top: 10,
         right: 20,
-        bottom: 15,
+        bottom: 10,
         left: 20,
       ),
-      child: SizedBox(
-        height: 100,
-        child: Card(
-          elevation: 2,
-          color: Colors.white,
+      child: Slidable(
+        endActionPane: ActionPane(
+          motion: const BehindMotion(),
+          children: [
+            SlidableAction(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+              ),
+              onPressed: widget.onEdit,
+              icon: Icons.edit,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+            ),
+            SlidableAction(
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              ),
+              onPressed: widget.onRemove,
+              icon: Icons.delete,
+              backgroundColor: Colors.red.shade600,
+            ),
+          ],
+        ),
+        child: Container(
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
           child: Center(
             child: ListTile(
               leading: Container(

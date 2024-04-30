@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/widgets/primary_card.dart';
+import 'package:pind_app/widgets/orboarding_card.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -40,7 +40,7 @@ class OnboardingPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  PrimaryCard(
+                  OnboardingCard(
                     title: "Controle do seu estoque na palma da sua mão",
                     description: "Comece agora mesmo!",
                     onPressed: () => context.push('/sign-in'),

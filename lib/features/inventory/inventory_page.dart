@@ -15,7 +15,12 @@ class InventoryPage extends StatelessWidget {
                 ListView.builder(
                   itemCount: 10,
                   itemBuilder: (ctx, index) {
-                    return const InventoryItem(name: "Banana", quantity: 120);
+                    return InventoryItem(
+                      name: "Banana",
+                      quantity: 120,
+                      onEdit: (context) {},
+                      onRemove: (context) {},
+                    );
                   },
                 ),
               ],

@@ -1,11 +1,11 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 
-class PrimaryCard extends StatelessWidget {
+class OnboardingCard extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback? onPressed;
-  const PrimaryCard({
+  const OnboardingCard({
     super.key,
     required this.title,
     required this.description,
