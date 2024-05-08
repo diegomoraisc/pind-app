@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pind_app/constants/app_text_styles.dart';
 
 class CustomListTile extends StatelessWidget {
   final String title;
@@ -33,10 +34,7 @@ class CustomListTile extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: Theme.of(context)
-              .textTheme
-              .titleSmall!
-              .apply(color: Colors.black),
+          style: AppTextStyles.medium14.apply(color: Colors.black),
         ),
         trailing: const Icon(
           Icons.keyboard_arrow_right_rounded,

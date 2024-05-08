@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pind_app/constants/app_text_styles.dart';
 import 'package:pind_app/features/profile/profile_controller.dart';
 import 'package:pind_app/locator.dart';
 import 'package:pind_app/widgets/custom_circle_avatar.dart';
@@ -65,14 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Text(
                 widget.userName,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .apply(color: Colors.black),
+                style: AppTextStyles.semiBold20.apply(color: Colors.black),
               ),
               Text(
                 widget.email,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: AppTextStyles.medium14,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/features/inventory/chart_page.dart';
+import 'package:pind_app/features/chart/chart_page.dart';
 import 'package:pind_app/features/inventory/inventory_page.dart';
-import 'package:pind_app/widgets/slidable_menu.dart';
-import 'package:pind_app/widgets/slidable_menu_item.dart';
 
 class InventoryPageView extends StatefulWidget {
   const InventoryPageView({super.key});
@@ -12,66 +10,42 @@ class InventoryPageView extends StatefulWidget {
 }
 
 class _InventoryPageViewState extends State<InventoryPageView> {
-  final _pageController = PageController();
-  int _currentPageIndex = 0;
-
-  void _onPageChanged(int index) {
-    setState(() {
-      _currentPageIndex = index;
-    });
-  }
-
-  void _onNavItemTapped(int index) {
-    _pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.ease,
-    );
-  }
+  TabBar get _tabBar => const TabBar(
+        tabs: [
+          Tab(
+            icon: Icon(Icons.bar_chart_rounded),
+          ),
+          Tab(
+            icon: Icon(Icons.inventory_2_rounded),
+          ),
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SlidableMenu(
-            children: [
-              SlidableMenuItem(
-                onPressed: () {
-                  _onNavItemTapped(0);
-                },
-                icon: Icons.inventory_2_rounded,
-                iconColor: _currentPageIndex == 0
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.grey[350]!,
-                color: _currentPageIndex == 0
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.white,
+      body: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            PreferredSize(
+              preferredSize: _tabBar.preferredSize,
+              child: ColoredBox(
+                color: Colors.white,
+                child: _tabBar,
               ),
-              SlidableMenuItem(
-                onPressed: () => _onNavItemTapped(1),
-                icon: Icons.bar_chart_rounded,
-                iconColor: _currentPageIndex == 1
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.grey[350]!,
-                color: _currentPageIndex == 1
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.white,
-              ),
-            ],
-          ),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: _onPageChanged,
-              physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                InventoryPage(), // Primeira página
-                ChartPage(),
-              ],
             ),
-          ),
-        ],
+            const Expanded(
+              child: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  ChartPage(),
+                  InventoryPage(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

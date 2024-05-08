@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pind_app/constants/app_text_styles.dart';
 import 'package:pind_app/features/sign_in/sign_in_controller.dart';
 import 'package:pind_app/features/sign_in/sign_in_state.dart';
 import 'package:pind_app/locator.dart';
@@ -10,7 +11,7 @@ import 'package:pind_app/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/widgets/custom_text_button.dart';
 import 'package:pind_app/widgets/custom_text_form_field.dart';
 import 'package:pind_app/widgets/primary_button.dart';
-import 'package:pind_app/widgets/utils/validator.dart';
+import 'package:pind_app/utils/validator.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -70,8 +71,8 @@ class _SignInPageState extends State<SignInPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
+            const Padding(
+              padding: EdgeInsets.only(
                 left: 24,
                 top: 72,
               ),
@@ -79,17 +80,17 @@ class _SignInPageState extends State<SignInPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
+                    padding: EdgeInsets.only(
                       bottom: 8,
                     ),
                     child: Text(
                       "Faça o login na sua conta.",
-                      style: Theme.of(context).textTheme.headlineLarge,
+                      style: AppTextStyles.semiBold32,
                     ),
                   ),
                   Text(
                     "Entre agora e mantenha seu negócio em movimento",
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: AppTextStyles.medium14,
                   ),
                 ],
               ),

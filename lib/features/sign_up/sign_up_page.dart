@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pind_app/constants/app_text_styles.dart';
 import 'package:pind_app/features/sign_up/sign_up_controller.dart';
 import 'package:pind_app/features/sign_up/sign_up_state.dart';
 import 'package:pind_app/locator.dart';
@@ -9,7 +10,7 @@ import 'package:pind_app/widgets/custom_modal_bottom_sheet.dart';
 import 'package:pind_app/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/widgets/custom_text_form_field.dart';
 import 'package:pind_app/widgets/primary_button.dart';
-import 'package:pind_app/widgets/utils/validator.dart';
+import 'package:pind_app/utils/validator.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -72,8 +73,8 @@ class _SignUpPageState extends State<SignUpPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
+            const Padding(
+              padding: EdgeInsets.only(
                 top: 72,
                 left: 24,
               ),
@@ -81,15 +82,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: EdgeInsets.only(bottom: 8.0),
                     child: Text(
                       "Junte-se a nós. Crie sua conta agora.",
-                      style: Theme.of(context).textTheme.headlineLarge,
+                      style: AppTextStyles.semiBold32,
                     ),
                   ),
                   Text(
                     "Vamos começar a gerenciar seu estoque! Registre-se agora",
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: AppTextStyles.medium14,
                   ),
                 ],
               ),

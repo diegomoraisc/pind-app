@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pind_app/constants/app_colors.dart';
 
 class AppTheme {
   static ThemeData lightTheme() {
@@ -16,8 +17,13 @@ class AppTheme {
           color: Colors.black,
         ),
         actionsIconTheme: IconThemeData(
-          color: Color(0xFF3C7B2F),
+          color: AppColors.primary,
         ),
+      ),
+      tabBarTheme: const TabBarTheme(
+        dividerColor: Colors.transparent,
+        indicatorSize: TabBarIndicatorSize.tab,
+        unselectedLabelColor: Colors.grey,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Colors.white,
@@ -25,41 +31,12 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
       ),
       colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xFF3C7B2F),
-        primary: const Color(0xFF3C7B2F),
-        secondary: const Color(0xFF509041),
-        background: const Color(0xFF78B966),
+        seedColor: AppColors.primary,
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
+        tertiary: AppColors.tertiary,
+        background: AppColors.background,
         brightness: Brightness.light,
-      ),
-      textTheme: const TextTheme(
-        displayMedium: TextStyle(
-          fontSize: 58,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-        headlineLarge: TextStyle(
-          fontSize: 32,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0,
-          color: Colors.black,
-        ),
-        titleLarge: TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
-        titleMedium: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0,
-          color: Colors.black,
-        ),
-        titleSmall: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 0,
-          color: Color(0xFF878787),
-        ),
       ),
     );
   }

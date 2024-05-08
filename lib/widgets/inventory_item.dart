@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:pind_app/constants/app_colors.dart';
+import 'package:pind_app/constants/app_text_styles.dart';
 
 class InventoryItem extends StatefulWidget {
   final String name;
@@ -35,7 +37,7 @@ class _InventoryItemState extends State<InventoryItem> {
 
   Color stockColor(double quantity) {
     if (quantity > 100) {
-      return const Color(0xFF3C7B2F);
+      return AppColors.primary;
     } else if (quantity > 30) {
       return Colors.amber.shade300;
     } else {
@@ -45,6 +47,8 @@ class _InventoryItemState extends State<InventoryItem> {
 
   @override
   Widget build(BuildContext context) {
+    BorderRadius borderRadius = BorderRadius.circular(12);
+
     return Padding(
       padding: const EdgeInsets.only(
         top: 10,
@@ -52,59 +56,75 @@ class _InventoryItemState extends State<InventoryItem> {
         bottom: 10,
         left: 20,
       ),
-      child: Slidable(
-        endActionPane: ActionPane(
-          motion: const BehindMotion(),
+      child: Card(
+        child: Stack(
+          clipBehavior: Clip.antiAlias,
           children: [
-            SlidableAction(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-              ),
-              onPressed: widget.onEdit,
-              icon: Icons.edit,
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-            ),
-            SlidableAction(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(15),
-                bottomRight: Radius.circular(15),
-              ),
-              onPressed: widget.onRemove,
-              icon: Icons.delete,
-              backgroundColor: Colors.red.shade600,
-            ),
-          ],
-        ),
-        child: Container(
-          height: 100,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Center(
-            child: ListTile(
-              leading: Container(
-                height: 40,
-                width: 7,
-                decoration: BoxDecoration(
-                  color: stockColor(_quantity),
-                  borderRadius: BorderRadius.circular(50),
+            Positioned.fill(
+              child: Builder(
+                builder: (context) => Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: borderRadius,
+                  ),
                 ),
               ),
-              title: Text(
-                widget.name,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .apply(color: Theme.of(context).colorScheme.primary),
+            ),
+            Slidable(
+              key: UniqueKey(),
+              direction: Axis.horizontal,
+              endActionPane: ActionPane(
+                motion: const BehindMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: widget.onEdit,
+                    icon: Icons.edit,
+                    foregroundColor: Colors.grey,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  SlidableAction(
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+                    onPressed: widget.onRemove,
+                    icon: Icons.delete,
+                    foregroundColor: Colors.red,
+                    backgroundColor: Colors.transparent,
+                  ),
+                ],
               ),
-              subtitle: Text(
-                "${widget.quantity.toStringAsFixed(1)} (kg)",
-                style: Theme.of(context).textTheme.titleSmall,
+              child: Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: borderRadius,
+                ),
+                child: Center(
+                  child: ListTile(
+                    leading: Container(
+                      height: 40,
+                      width: 7,
+                      decoration: BoxDecoration(
+                        color: stockColor(_quantity),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    title: Text(
+                      widget.name,
+                      style: AppTextStyles.semiBold20.apply(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    subtitle: Text(
+                      "${widget.quantity.toStringAsFixed(1)} (kg)",
+                      style: AppTextStyles.medium14,
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

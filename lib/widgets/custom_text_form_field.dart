@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:pind_app/constants/app_text_styles.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
@@ -42,10 +43,7 @@ class CustomTextFormField extends StatelessWidget {
             ),
             child: Text(
               fieldName,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleSmall!
-                  .apply(color: fieldNameColor),
+              style: AppTextStyles.medium14.apply(color: fieldNameColor),
             ),
           ),
           TextFormField(
@@ -58,7 +56,7 @@ class CustomTextFormField extends StatelessWidget {
               helperText: helperText,
               helperMaxLines: 3,
               hintText: hintText,
-              hintStyle: Theme.of(context).textTheme.titleSmall,
+              hintStyle: AppTextStyles.medium14,
               border: defaultBorder,
               enabledBorder: defaultBorder.copyWith(
                 borderSide: const BorderSide(color: Color(0xFFEDEDED)),

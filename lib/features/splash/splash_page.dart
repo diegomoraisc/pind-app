@@ -37,6 +37,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(

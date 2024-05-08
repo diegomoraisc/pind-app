@@ -10,20 +10,16 @@ class InventoryPage extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: Stack(
-              children: [
-                ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (ctx, index) {
-                    return InventoryItem(
-                      name: "Banana",
-                      quantity: 120,
-                      onEdit: (context) {},
-                      onRemove: (context) {},
-                    );
-                  },
-                ),
-              ],
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (ctx, index) {
+                return InventoryItem(
+                  name: "Banana",
+                  quantity: 120,
+                  onEdit: (context) {},
+                  onRemove: (context) {},
+                );
+              },
             ),
           ),
         ],
