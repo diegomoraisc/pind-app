@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:pind_app/src/common/widgets/inventory_item.dart';
+
+class StockListPage extends StatelessWidget {
+  const StockListPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (ctx, index) {
+                return InventoryItem(
+                  name: "Banana",
+                  quantity: 120,
+                  onEdit: (context) {},
+                  onRemove: (context) {},
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/app.dart';
+import 'package:pind_app/src/app.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:pind_app/locator.dart';
+import 'package:pind_app/src/common/utils/locator.dart';
 import 'firebase_options.dart';
 
 void main() async {
