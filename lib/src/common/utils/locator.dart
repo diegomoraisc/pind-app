@@ -1,42 +1,31 @@
 import 'package:get_it/get_it.dart';
 import 'package:pind_app/src/features/auth/interactor/blocs/auth_bloc.dart';
-import 'package:pind_app/src/features/profile/profile_controller.dart';
 import 'package:pind_app/src/features/auth/interactor/services/auth_service.dart';
 import 'package:pind_app/src/features/auth/data/services/firebase_auth_service.dart';
-import 'package:pind_app/services/secure_storage.dart';
+import 'package:pind_app/src/features/stock/data/repositories/product_db_repository.dart';
+import 'package:pind_app/src/features/stock/interactor/blocs/product_bloc.dart';
+import 'package:pind_app/src/features/stock/interactor/repositories/product_repository.dart';
 
 final getIt = GetIt.instance;
 
 void setup() {
-  getIt.registerLazySingleton<AuthService>(() => FirebaseAuthService());
-  getIt.registerLazySingleton<AuthBloc>(
-    () => AuthBloc(getIt.get<AuthService>()),
+  getIt.registerLazySingleton<AuthService>(
+    () => FirebaseAuthService(),
   );
 
-  /*getIt.registerFactory<SplashController>(
-    () => SplashController(
-      const SecureStorage(),
+  getIt.registerLazySingleton<ProductRepository>(
+    () => ProductDbRepository(),
+  );
+
+  getIt.registerFactory<AuthBloc>(
+    () => AuthBloc(
+      getIt.get<AuthService>(),
     ),
   );
 
-  getIt.registerFactory<SignInController>(
-    () => SignInController(
-      getIt.get<AuthService>(),
-      const SecureStorage(),
-    ),
-  );
-
-  getIt.registerFactory<SignUpController>(
-    () => SignUpController(
-      getIt.get<AuthService>(),
-      const SecureStorage(),
-    ),
-  ); */
-
-  getIt.registerFactory<ProfileController>(
-    () => ProfileController(
-      getIt.get<AuthService>(),
-      const SecureStorage(),
+  getIt.registerFactory<ProductBloc>(
+    () => ProductBloc(
+      getIt.get<ProductRepository>(),
     ),
   );
 }

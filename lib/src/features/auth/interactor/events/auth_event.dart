@@ -1,25 +1,27 @@
 sealed class AuthEvent {}
 
-class SignInAuthEvent implements AuthEvent {
+class LoginAuthEvent implements AuthEvent {
   final String email;
   final String password;
 
-  SignInAuthEvent({
+  LoginAuthEvent({
     required this.email,
     required this.password,
   });
 }
 
-class SignUpAuthEvent implements AuthEvent {
+class RegisterAuthEvent implements AuthEvent {
   final String name;
   final String email;
   final String password;
 
-  SignUpAuthEvent({
+  RegisterAuthEvent({
     required this.name,
     required this.email,
     required this.password,
   });
 }
 
-class SignOutAuthEvent implements AuthEvent {}
+class CheckAuthEvent implements AuthEvent {}
+
+class LogoutAuthEvent implements AuthEvent {}

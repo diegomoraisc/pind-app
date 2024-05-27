@@ -4,20 +4,16 @@ sealed class AuthState {
   const AuthState();
 }
 
-class SignedInAuthState implements AuthState {
+class LoggedAuthState implements AuthState {
   final UserEntity user;
 
-  const SignedInAuthState(this.user);
+  const LoggedAuthState(this.user);
 }
 
-class SignedOutAuthState implements AuthState {
-  const SignedOutAuthState();
-}
-
-class SignedUpAuthState implements AuthState {
+class RegisteredAuthState implements AuthState {
   final UserEntity user;
 
-  const SignedUpAuthState(this.user);
+  const RegisteredAuthState(this.user);
 }
 
 class LoadingAuthState implements AuthState {
@@ -25,7 +21,11 @@ class LoadingAuthState implements AuthState {
 }
 
 class ErrorAuthState implements AuthState {
-  final String message;
+  final String errorMessage;
 
-  const ErrorAuthState(this.message);
+  const ErrorAuthState(this.errorMessage);
+}
+
+class LoggedOutAuthState implements AuthState {
+  const LoggedOutAuthState();
 }

@@ -48,13 +48,13 @@ class _SignInPageState extends State<SignInPage> {
           context.pop();
         }
 
-        if (state is SignedInAuthState) {
+        if (state is LoggedAuthState) {
           context.go('/home');
         } else if (state is ErrorAuthState) {
           final ErrorAuthState error = state;
           customModalBottomSheet(
             context: context,
-            text: error.message,
+            text: error.errorMessage,
             bottomText: "Tente novamente",
           );
         }
@@ -156,7 +156,7 @@ class _SignInPageState extends State<SignInPage> {
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    final event = SignInAuthEvent(
+                    final event = LoginAuthEvent(
                       email: _emailController.text,
                       password: _passwordController.text,
                     );

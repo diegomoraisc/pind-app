@@ -6,7 +6,7 @@ import 'package:pind_app/src/features/auth/ui/sign_up_page.dart';
 import 'package:pind_app/src/features/auth/ui/splash_page.dart';
 
 final _router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/splash',
   routes: [
     GoRoute(
       path: '/',

@@ -49,13 +49,13 @@ class _SignUpPageState extends State<SignUpPage> {
           context.pop();
         }
 
-        if (state is SignedUpAuthState) {
+        if (state is RegisteredAuthState) {
           context.go('/home');
         } else if (state is ErrorAuthState) {
           final ErrorAuthState error = state;
           customModalBottomSheet(
             context: context,
-            text: error.message,
+            text: error.errorMessage,
             bottomText: 'Tente novamente',
           );
         }
@@ -178,7 +178,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 fontSize: 14,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    final event = SignUpAuthEvent(
+                    final event = RegisterAuthEvent(
                       name: _nameController.text,
                       email: _emailController.text,
                       password: _passwordController.text,

@@ -7,7 +7,6 @@ class UserAdapter {
       id: user.uid,
       name: user.displayName,
       email: user.email,
-      token: "",
     );
   }
 }

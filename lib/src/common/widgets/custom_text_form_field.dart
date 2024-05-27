@@ -6,6 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final String fieldName;
   final Color? fieldNameColor;
+  final Color? borderColor;
   final String hintText;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
@@ -28,6 +29,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText,
     this.validator,
     this.helperText,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -59,7 +61,9 @@ class CustomTextFormField extends StatelessWidget {
               hintStyle: AppTextStyles.medium14,
               border: defaultBorder,
               enabledBorder: defaultBorder.copyWith(
-                borderSide: const BorderSide(color: Color(0xFFEDEDED)),
+                borderSide: BorderSide(
+                  color: borderColor ?? const Color(0xFFEDEDED),
+                ),
               ),
             ),
           ),

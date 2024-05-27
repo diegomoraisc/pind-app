@@ -5,23 +5,23 @@ import 'package:pind_app/src/features/auth/interactor/services/auth_service.dart
 import 'package:pind_app/src/features/auth/interactor/states/auth_state.dart';
 
 class FirebaseAuthService implements AuthService {
-  final _firebaseAuthInstance = FirebaseAuth.instance;
+  final firebaseAuth = FirebaseAuth.instance;
 
   @override
-  Future<AuthState> signIn({
+  Future<AuthState> login({
     required email,
     required password,
   }) async {
     try {
-      final result = await _firebaseAuthInstance.signInWithEmailAndPassword(
+      final result = await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       if (result.user != null) {
         final user = UserAdapter.fromFirebaseUser(result.user!);
-        return SignedInAuthState(user);
+        return LoggedAuthState(user);
       } else {
-        return const SignedOutAuthState();
+        return const LoggedOutAuthState();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -31,17 +31,19 @@ class FirebaseAuthService implements AuthService {
       }
 
       throw e.message ?? "Algo está errado. Tente novamente.";
+    } catch (e) {
+      return const LoggedOutAuthState();
     }
   }
 
   @override
-  Future<AuthState> signUp({
+  Future<AuthState> register({
     String? name,
     required email,
     required password,
   }) async {
     try {
-      final result = await _firebaseAuthInstance.createUserWithEmailAndPassword(
+      final result = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -49,9 +51,9 @@ class FirebaseAuthService implements AuthService {
       await result.user!.updateDisplayName(name);
       if (result.user != null) {
         final user = UserAdapter.fromFirebaseUser(result.user!);
-        return SignedUpAuthState(user);
+        return RegisteredAuthState(user);
       } else {
-        return const SignedOutAuthState();
+        return const LoggedOutAuthState();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -61,12 +63,24 @@ class FirebaseAuthService implements AuthService {
       }
 
       throw e.message ?? "Algo está errado. Tente novamente.";
+    } catch (e) {
+      return const LoggedOutAuthState();
     }
   }
 
   @override
-  Future<AuthState> signOut() async {
-    await _firebaseAuthInstance.signOut();
-    return const SignedOutAuthState();
+  Future<AuthState> logout() async {
+    await firebaseAuth.signOut();
+    return const LoggedOutAuthState();
+  }
+
+  @override
+  AuthState getUser() {
+    final user = firebaseAuth.currentUser;
+    if (user != null) {
+      final userEntity = UserAdapter.fromFirebaseUser(user);
+      return LoggedAuthState(userEntity);
+    }
+    return const LoggedOutAuthState();
   }
 }

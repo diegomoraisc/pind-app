@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
-import 'package:pind_app/src/features/profile/profile_controller.dart';
+import 'package:pind_app/src/features/auth/interactor/blocs/auth_bloc.dart';
+import 'package:pind_app/src/features/auth/interactor/events/auth_event.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
 import 'package:pind_app/src/common/widgets/custom_circle_avatar.dart';
 import 'package:pind_app/src/common/widgets/custom_list_tile.dart';
@@ -23,7 +24,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final _controller = getIt.get<ProfileController>();
+  final AuthBloc bloc = getIt<AuthBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
               backgroundColor: Colors.red,
               text: "Sair",
               onPressed: () {
-                _controller.signOut();
+                bloc.add(LogoutAuthEvent());
                 context.go('/');
               },
               fontSize: 14,

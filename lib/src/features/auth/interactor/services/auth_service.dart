@@ -1,16 +1,18 @@
 import 'package:pind_app/src/features/auth/interactor/states/auth_state.dart';
 
 abstract class AuthService {
-  Future<AuthState> signIn({
+  Future<AuthState> login({
     required email,
     required password,
   });
 
-  Future<AuthState> signUp({
+  Future<AuthState> register({
     String? name,
     required email,
     required password,
   });
 
-  Future<AuthState> signOut();
+  AuthState getUser();
+
+  Future<AuthState> logout();
 }

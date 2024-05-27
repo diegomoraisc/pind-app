@@ -6,34 +6,49 @@ import 'package:pind_app/src/features/auth/interactor/states/auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService service;
 
-  AuthBloc(this.service) : super(const SignedOutAuthState()) {
-    on<SignInAuthEvent>(_signInAuthEvent);
-    on<SignUpAuthEvent>(_signUpAuthEvent);
-    on<SignOutAuthEvent>(_signOutAuthEvent);
+  AuthBloc(this.service) : super(const LoggedOutAuthState()) {
+    on<LoginAuthEvent>(_loginAuthEvent);
+    on<RegisterAuthEvent>(_registerAuthEvent);
+    on<LogoutAuthEvent>(_logoutAuthEvent);
+    on<CheckAuthEvent>(_checkAuthEvent);
   }
 
-  void _signInAuthEvent(SignInAuthEvent event, emit) async {
+  void _loginAuthEvent(LoginAuthEvent event, emit) async {
     emit(const LoadingAuthState());
-    final newState = await service.signIn(
-      email: event.email,
-      password: event.password,
-    );
+    try {
+      final newState = await service.login(
+        email: event.email,
+        password: event.password,
+      );
+      emit(newState);
+    } catch (e) {
+      emit(ErrorAuthState(e.toString()));
+    }
+  }
+
+  void _registerAuthEvent(RegisterAuthEvent event, emit) async {
+    emit(const LoadingAuthState());
+    try {
+      final newState = await service.register(
+        name: event.name,
+        email: event.email,
+        password: event.password,
+      );
+      emit(newState);
+    } catch (e) {
+      emit(ErrorAuthState(e.toString()));
+    }
+  }
+
+  void _logoutAuthEvent(LogoutAuthEvent event, emit) async {
+    emit(const LoadingAuthState());
+    await service.logout();
+    emit(const LoggedOutAuthState());
+  }
+
+  void _checkAuthEvent(CheckAuthEvent event, emit) async {
+    await Future.delayed(const Duration(seconds: 3));
+    final newState = service.getUser();
     emit(newState);
-  }
-
-  void _signUpAuthEvent(SignUpAuthEvent event, emit) async {
-    emit(const LoadingAuthState());
-    final newState = await service.signUp(
-      name: event.name,
-      email: event.email,
-      password: event.password,
-    );
-    emit(newState);
-  }
-
-  void _signOutAuthEvent(SignOutAuthEvent event, emit) async {
-    emit(const LoadingAuthState());
-    await service.signOut();
-    emit(const SignedOutAuthState());
   }
 }
