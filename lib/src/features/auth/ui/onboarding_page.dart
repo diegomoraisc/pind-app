@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/src/common/widgets/orboarding_card.dart';
+import 'package:pind_app/src/features/auth/ui/widgets/orboarding_card.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});

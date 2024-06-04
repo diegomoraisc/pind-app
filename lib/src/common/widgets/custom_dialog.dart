@@ -13,9 +13,6 @@ class CustomDialog extends StatelessWidget {
   final String secondFieldName;
   final String secondFieldHintText;
   final TextEditingController secondFieldController;
-  final String thirdFieldName;
-  final String thirdFieldHintText;
-  final TextEditingController thirdFieldController;
   final VoidCallback? onPrimaryButtonTapped;
   final VoidCallback? onSecondaryButtonTapped;
   const CustomDialog({
@@ -27,11 +24,8 @@ class CustomDialog extends StatelessWidget {
     required this.firstFieldHintText,
     required this.secondFieldName,
     required this.secondFieldHintText,
-    required this.thirdFieldName,
-    required this.thirdFieldHintText,
     required this.firstFieldController,
     required this.secondFieldController,
-    required this.thirdFieldController,
     this.onPrimaryButtonTapped,
     this.onSecondaryButtonTapped,
   });
@@ -63,12 +57,6 @@ class CustomDialog extends StatelessWidget {
                     controller: secondFieldController,
                     fieldName: secondFieldName,
                     hintText: secondFieldHintText,
-                    borderColor: AppColors.grey,
-                  ),
-                  CustomTextFormField(
-                    controller: thirdFieldController,
-                    fieldName: thirdFieldName,
-                    hintText: thirdFieldHintText,
                     borderColor: AppColors.grey,
                   ),
                 ],

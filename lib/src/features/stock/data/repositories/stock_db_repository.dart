@@ -12,8 +12,11 @@ class ProductDbRepository implements ProductRepository {
   Future<ProductState> addProduct(ProductEntity newProduct) async {
     try {
       final product = ProductAdapter.toMap(newProduct);
-      await productsCollection.add(product);
-      return AddedProductState(newProduct);
+      final docRef = await productsCollection.add(product);
+
+      final addedProduct = newProduct.copyWith(id: docRef.id);
+
+      return LoadedProductState([addedProduct]);
     } catch (e) {
       return ErrorProductState(e.toString());
     }
@@ -37,8 +40,10 @@ class ProductDbRepository implements ProductRepository {
       QuerySnapshot querySnapshot = await productsCollection.get();
       List<ProductEntity> products = [];
       for (var doc in querySnapshot.docs) {
-        products
-            .add(ProductAdapter.fromMap(doc.data() as Map<String, dynamic>));
+        final product =
+            ProductAdapter.fromMap(doc.data() as Map<String, dynamic>);
+        // Atribui o ID do documento ao ProductEntity
+        products.add(product.copyWith(id: doc.id));
       }
       return LoadedProductState(products);
     } catch (e) {

@@ -1,3 +1,4 @@
+
 import 'package:pind_app/src/features/stock/interactor/entities/product_entity.dart';
 
 sealed class ProductState {

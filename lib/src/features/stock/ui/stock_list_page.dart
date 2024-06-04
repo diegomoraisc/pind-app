@@ -23,7 +23,6 @@ class _StockListPageState extends State<StockListPage> {
   final _bloc = getIt<ProductBloc>();
   final _nameController = TextEditingController();
   final _quantityController = TextEditingController();
-  final _categoryController = TextEditingController();
 
   @override
   void initState() {
@@ -35,58 +34,58 @@ class _StockListPageState extends State<StockListPage> {
   void dispose() {
     _nameController.dispose();
     _quantityController.dispose();
-    _categoryController.dispose();
     super.dispose();
   }
 
-  void _addOrEditProduct({String? id}) {
+  void _clearTextFields() {
+    _nameController.clear();
+    _quantityController.clear();
+  }
+
+  void _addOrEditProduct(
+    BuildContext context, {
+    String? productId,
+  }) {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: id == null ? "Novo Produto" : "Editar Produto",
+        title: productId == null ? "Novo Produto" : "Editar Produto",
         firstFieldName: "Nome",
         firstFieldHintText: "Nome do produto",
         firstFieldController: _nameController,
         secondFieldName: "Quantidade",
         secondFieldHintText: "Quantidade (kg)",
         secondFieldController: _quantityController,
-        thirdFieldName: "Categoria",
-        thirdFieldHintText: "Categoria do produto",
-        thirdFieldController: _categoryController,
-        primaryButtonText: id == null ? "Adicionar" : "Editar",
+        primaryButtonText: productId == null ? "Adicionar" : "Editar",
         secondaryButtonText: "Cancelar",
         onPrimaryButtonTapped: () {
           final name = _nameController.text;
           final quantity = _quantityController.text;
-          final category = _categoryController.text;
-
-          if (id == null) {
+          if (productId != null) {
+            _bloc.add(
+              UpdateProductEvent(
+                id: productId,
+                updatedProduct: ProductEntity(
+                  id: productId,
+                  name: name,
+                  quantity: quantity,
+                ),
+              ),
+            );
+          } else {
             _bloc.add(
               AddProductEvent(
                 product: ProductEntity(
                   id: const Uuid().v1(),
                   name: name,
                   quantity: quantity,
-                  category: category,
-                ),
-              ),
-            );
-          } else {
-            _bloc.add(
-              UpdateProductEvent(
-                id: id,
-                updatedProduct: ProductEntity(
-                  name: name,
-                  quantity: quantity,
-                  category: category,
                 ),
               ),
             );
           }
-
-          _bloc.add(GetAllProductsEvent());
           context.pop();
           _clearTextFields();
+          _bloc.add(GetAllProductsEvent());
         },
         onSecondaryButtonTapped: () {
           context.pop();
@@ -94,12 +93,6 @@ class _StockListPageState extends State<StockListPage> {
         },
       ),
     );
-  }
-
-  void _clearTextFields() {
-    _nameController.clear();
-    _quantityController.clear();
-    _categoryController.clear();
   }
 
   @override
@@ -124,16 +117,19 @@ class _StockListPageState extends State<StockListPage> {
                   itemBuilder: (ctx, index) {
                     final product = state.products[index];
                     return InventoryItem(
-                      name: product.name!,
-                      quantity: double.parse(product.quantity!),
-                      onEdit: (context) {
-                        _nameController.text = product.name!;
-                        _quantityController.text = product.quantity!;
-                        _categoryController.text = product.category!;
-                        _addOrEditProduct(id: product.id);
+                      name: product.name,
+                      quantity: double.parse(product.quantity),
+                      onEdit: (BuildContext context) {
+                        _nameController.text = product.name;
+                        _quantityController.text = product.quantity;
+                        _addOrEditProduct(
+                          context,
+                          productId: product.id,
+                        );
                       },
-                      onRemove: (context) {
+                      onRemove: (BuildContext context) {
                         _bloc.add(RemoveProductEvent(id: product.id!));
+                        _bloc.add(GetAllProductsEvent());
                       },
                     );
                   },
@@ -157,7 +153,7 @@ class _StockListPageState extends State<StockListPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _addOrEditProduct(),
+        onPressed: () => _addOrEditProduct(context),
         backgroundColor: theme.colorScheme.primary,
         child: const Icon(
           Icons.add,

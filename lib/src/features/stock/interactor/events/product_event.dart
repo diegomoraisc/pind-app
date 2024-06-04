@@ -31,3 +31,5 @@ class RemoveProductEvent implements ProductEvent {
 }
 
 class GetAllProductsEvent implements ProductEvent {}
+
+class GetAllCategoriesEvent implements ProductEvent {}

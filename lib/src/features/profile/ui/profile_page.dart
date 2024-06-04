@@ -6,9 +6,9 @@ import 'package:pind_app/src/features/auth/interactor/events/auth_event.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
 import 'package:pind_app/src/common/widgets/custom_circle_avatar.dart';
 import 'package:pind_app/src/common/widgets/custom_list_tile.dart';
-import 'package:pind_app/src/common/widgets/image_picker_modal.dart';
-import 'package:pind_app/src/common/widgets/image_picker_modal_item.dart';
 import 'package:pind_app/src/common/widgets/primary_button.dart';
+import 'package:pind_app/src/features/profile/ui/widgets/image_picker_modal.dart';
+import 'package:pind_app/src/features/profile/ui/widgets/image_picker_modal_item.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userName;

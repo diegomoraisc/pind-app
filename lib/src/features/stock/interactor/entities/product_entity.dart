@@ -1,11 +1,23 @@
 class ProductEntity {
-  String? id;
-  String? name;
-  String? quantity;
-  String? category;
+  final String? id;
+  final String name;
+  final String quantity;
+
   ProductEntity({
     this.id,
-    this.name,
-    this.quantity, required category,
+    required this.name,
+    required this.quantity,
   });
+
+  ProductEntity copyWith({
+    String? id,
+    String? name,
+    String? quantity,
+  }) {
+    return ProductEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      quantity: quantity ?? this.quantity,
+    );
+  }
 }

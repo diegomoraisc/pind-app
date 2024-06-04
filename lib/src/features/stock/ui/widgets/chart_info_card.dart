@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/widgets/chart_info_card_item.dart';
+import 'package:pind_app/src/features/stock/ui/widgets/chart_info_card_item.dart';
 
 class ChartInfoCard extends StatelessWidget {
   final List<ChartInfoCardItem> children;

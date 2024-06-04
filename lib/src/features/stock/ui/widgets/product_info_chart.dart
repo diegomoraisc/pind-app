@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class ProductInfoChart extends StatelessWidget {
-  final String categoryName;
-  final double totalQuantityCategory;
+  final String productName;
+  final double productQuantity;
   const ProductInfoChart({
     super.key,
-    required this.categoryName,
-    required this.totalQuantityCategory,
+    required this.productName,
+    required this.productQuantity,
   });
 
   @override
   Widget build(BuildContext context) {
     bool isVisible =
-        categoryName.isNotEmpty && totalQuantityCategory > 0.0 ? true : false;
+        productName.isNotEmpty && productQuantity > 0.0 ? true : false;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       curve: Curves.easeInOut,
@@ -40,11 +40,11 @@ class ProductInfoChart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  categoryName,
+                  productName,
                   style: AppTextStyles.semiBold20,
                 ),
                 Text(
-                  "${totalQuantityCategory.toStringAsFixed(0)} kg",
+                  "${productQuantity.toStringAsFixed(0)} kg",
                   style: AppTextStyles.medium14,
                 ),
               ],

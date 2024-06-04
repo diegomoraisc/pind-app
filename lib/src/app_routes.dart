@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:pind_app/src/features/home/ui/home_page.dart';
-import 'package:pind_app/src/features/onboarding/ui/onboarding_page.dart';
+import 'package:pind_app/src/features/auth/ui/onboarding_page.dart';
 import 'package:pind_app/src/features/auth/ui/sign_in_page.dart';
 import 'package:pind_app/src/features/auth/ui/sign_up_page.dart';
 import 'package:pind_app/src/features/auth/ui/splash_page.dart';
