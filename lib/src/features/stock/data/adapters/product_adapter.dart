@@ -10,7 +10,9 @@ class ProductAdapter {
   }
 
   static ProductEntity fromMap(Map<String, dynamic>? map, {String? id}) {
-    if (map == null) return ProductEntity(name: "", quantity: "0.0");
+    if (map == null) {
+      return ProductEntity(name: "", quantity: "0.0");
+    }
     return ProductEntity(
       id: id,
       name: map['name'] as String? ?? '',

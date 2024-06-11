@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/src/features/stock/ui/widgets/chart_info_card.dart';
@@ -50,21 +51,20 @@ class _StockChartPageState extends State<StockChartPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        child: BlocBuilder<ProductBloc, ProductState>(
-          bloc: _bloc,
-          builder: (context, state) {
-            if (state is LoadingProductState) {
-              return Center(
-                child: CustomProgressIndicator(
-                  color: theme.colorScheme.tertiary,
-                ),
-              );
-            } else if (state is LoadedProductState) {
-              _updateProducts(state.products);
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: BlocBuilder<ProductBloc, ProductState>(
+        bloc: _bloc,
+        builder: (context, state) {
+          if (state is LoadingProductState) {
+            return Center(
+              child: CustomProgressIndicator(
+                color: theme.colorScheme.tertiary,
+              ),
+            );
+          } else if (state is LoadedProductState) {
+            _updateProducts(state.products);
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              child: Column(
                 children: [
                   StockChart(
                     products: products,
@@ -72,19 +72,22 @@ class _StockChartPageState extends State<StockChartPage> {
                     productName: productName,
                     productQuantity: productQuantity,
                     onSectionTouched: (index) {
-                      setState(() {
-                        touchedIndex = index;
-                        if (index != null &&
-                            index >= 0 &&
-                            index < products.length) {
-                          productName = products[index].name;
-                          productQuantity =
-                              double.tryParse(products[index].quantity) ?? 0.0;
-                        } else {
-                          productName = null;
-                          productQuantity = null;
-                        }
-                      });
+                      setState(
+                        () {
+                          touchedIndex = index;
+                          if (index != null &&
+                              index >= 0 &&
+                              index < products.length) {
+                            productName = products[index].name;
+                            productQuantity =
+                                double.tryParse(products[index].quantity) ??
+                                    0.0;
+                          } else {
+                            productName = null;
+                            productQuantity = null;
+                          }
+                        },
+                      );
                     },
                   ),
                   Padding(
@@ -98,21 +101,21 @@ class _StockChartPageState extends State<StockChartPage> {
                               subTitle: products.length.toString(),
                               icon: FontAwesomeIcons.appleWhole,
                             ),
-                            const ChartInfoCardItem(
-                              title: "Clientes",
-                              subTitle: "0",
-                              icon: FontAwesomeIcons.list,
-                            ),
-                          ],
-                        ),
-                        ChartInfoCard(
-                          children: [
                             ChartInfoCardItem(
                               title: "Total em estoque (kg)",
                               subTitle: totalQuantity.toStringAsFixed(1),
                               icon: FontAwesomeIcons.weightHanging,
                             ),
-                            const ChartInfoCardItem(
+                          ],
+                        ),
+                        const ChartInfoCard(
+                          children: [
+                            ChartInfoCardItem(
+                              title: "Clientes",
+                              subTitle: "0",
+                              icon: FontAwesomeIcons.list,
+                            ),
+                            ChartInfoCardItem(
                               title: "Pedidos",
                               subTitle: "0",
                               icon: FontAwesomeIcons.truckFast,
@@ -123,14 +126,20 @@ class _StockChartPageState extends State<StockChartPage> {
                     ),
                   ),
                 ],
-              );
-            } else {
-              return const Center(
-                child: Text("Nenhum produto encontrado"),
-              );
-            }
-          },
-        ),
+              ),
+            );
+          } else if (state is ErrorProductState) {
+            final message = state.message;
+            return Center(
+              child: Text(
+                message,
+                style: AppTextStyles.medium14,
+              ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       ),
     );
   }

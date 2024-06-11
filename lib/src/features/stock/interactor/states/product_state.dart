@@ -1,14 +1,7 @@
-
 import 'package:pind_app/src/features/stock/interactor/entities/product_entity.dart';
 
 sealed class ProductState {
   const ProductState();
-}
-
-class InitialProductState implements ProductState {
-  final List<ProductEntity> products;
-
-  const InitialProductState(this.products);
 }
 
 class LoadingProductState implements ProductState {

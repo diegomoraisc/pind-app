@@ -1,5 +1,5 @@
-class Validator {
-  Validator._();
+class AuthValidator {
+  AuthValidator._();
 
   static String? validateName(String? value) {
     final conditionRegex = RegExp(r"\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+");

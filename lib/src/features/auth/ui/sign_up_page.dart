@@ -12,7 +12,7 @@ import 'package:pind_app/src/common/widgets/custom_modal_bottom_sheet.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/src/common/widgets/custom_text_form_field.dart';
 import 'package:pind_app/src/common/widgets/primary_button.dart';
-import 'package:pind_app/src/common/utils/validator.dart';
+import 'package:pind_app/src/common/utils/auth_validator.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -115,21 +115,21 @@ class _SignUpPageState extends State<SignUpPage> {
                       fieldName: "Nome Completo",
                       hintText: "Digite seu nome completo",
                       controller: _nameController,
-                      validator: Validator.validateName,
+                      validator: AuthValidator.validateName,
                       keyboardType: TextInputType.name,
                     ),
                     CustomTextFormField(
                       fieldName: "E-mail",
                       hintText: "Digite seu e-mail",
                       controller: _emailController,
-                      validator: Validator.validateEmail,
+                      validator: AuthValidator.validateEmail,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     CustomTextFormField(
                       fieldName: "Senha",
                       hintText: "Digite sua senha",
                       controller: _passwordController,
-                      validator: Validator.validatePassword,
+                      validator: AuthValidator.validatePassword,
                       helperText:
                           "Por favor, escolha uma senha com pelo menos 8 caracteres, incluindo pelo menos uma letra maiúscula e um número",
                       obscureText: isPasswordHidden,
@@ -145,7 +145,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     CustomTextFormField(
                       fieldName: "Confirmar Senha",
                       hintText: "Confirme sua senha",
-                      validator: (value) => Validator.validateConfirmPassword(
+                      validator: (value) =>
+                          AuthValidator.validateConfirmPassword(
                         value,
                         _passwordController.text,
                       ),

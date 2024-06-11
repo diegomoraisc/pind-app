@@ -6,7 +6,7 @@ import 'package:pind_app/src/features/stock/interactor/states/product_state.dart
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductRepository repository;
 
-  ProductBloc(this.repository) : super(const InitialProductState([])) {
+  ProductBloc(this.repository) : super(const LoadingProductState()) {
     on<AddProductEvent>(_addProductEvent);
     on<UpdateProductEvent>(_updateProductEvent);
     on<RemoveProductEvent>(_removeProductEvent);
@@ -16,23 +16,37 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   void _addProductEvent(
       AddProductEvent event, Emitter<ProductState> emit) async {
     emit(const LoadingProductState());
-    final newState = await repository.addProduct(event.product);
-    emit(newState);
+    try {
+      await repository.addProduct(event.product);
+      final products = await repository.getAllProducts();
+      emit(products);
+    } catch (e) {
+      emit(ErrorProductState(e.toString()));
+    }
   }
 
   void _updateProductEvent(
       UpdateProductEvent event, Emitter<ProductState> emit) async {
     emit(const LoadingProductState());
-    final newState =
-        await repository.editProduct(event.id, event.updatedProduct);
-    emit(newState);
+    try {
+      await repository.editProduct(event.id, event.updatedProduct);
+      final products = await repository.getAllProducts();
+      emit(products);
+    } catch (e) {
+      emit(ErrorProductState(e.toString()));
+    }
   }
 
   void _removeProductEvent(
       RemoveProductEvent event, Emitter<ProductState> emit) async {
     emit(const LoadingProductState());
-    final newState = await repository.removeProduct(event.id);
-    emit(newState);
+    try {
+      await repository.removeProduct(event.id);
+      final products = await repository.getAllProducts();
+      emit(products);
+    } catch (e) {
+      emit(ErrorProductState(e.toString()));
+    }
   }
 
   void _getAllProductsEvent(

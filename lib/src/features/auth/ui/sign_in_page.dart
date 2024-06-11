@@ -13,7 +13,7 @@ import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/src/common/widgets/custom_text_button.dart';
 import 'package:pind_app/src/common/widgets/custom_text_form_field.dart';
 import 'package:pind_app/src/common/widgets/primary_button.dart';
-import 'package:pind_app/src/common/utils/validator.dart';
+import 'package:pind_app/src/common/utils/auth_validator.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -115,14 +115,14 @@ class _SignInPageState extends State<SignInPage> {
                       fieldName: "E-mail",
                       hintText: "Digite seu e-mail",
                       controller: _emailController,
-                      validator: Validator.validateEmail,
+                      validator: AuthValidator.validateEmail,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     CustomTextFormField(
                       fieldName: "Senha",
                       hintText: "Digite sua senha",
                       controller: _passwordController,
-                      validator: Validator.validatePassword,
+                      validator: AuthValidator.validatePassword,
                       obscureText: isHidden,
                       suffixIcon: GestureDetector(
                         onTap: () => setState(() {

@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
-import 'package:pind_app/src/common/widgets/custom_dialog.dart';
+import 'package:pind_app/src/features/stock/ui/widgets/product_dialog.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
-import 'package:pind_app/src/common/widgets/inventory_item.dart';
+import 'package:pind_app/src/features/stock/ui/widgets/inventory_item.dart';
 import 'package:pind_app/src/features/stock/interactor/blocs/product_bloc.dart';
 import 'package:pind_app/src/features/stock/interactor/entities/product_entity.dart';
 import 'package:pind_app/src/features/stock/interactor/events/product_event.dart';
@@ -48,14 +48,14 @@ class _StockListPageState extends State<StockListPage> {
   }) {
     showDialog(
       context: context,
-      builder: (context) => CustomDialog(
+      builder: (context) => ProductDialog(
         title: productId == null ? "Novo Produto" : "Editar Produto",
-        firstFieldName: "Nome",
-        firstFieldHintText: "Nome do produto",
-        firstFieldController: _nameController,
-        secondFieldName: "Quantidade",
-        secondFieldHintText: "Quantidade (kg)",
-        secondFieldController: _quantityController,
+        productName: "Nome",
+        productHintText: "Nome do produto",
+        productFieldController: _nameController,
+        quantity: "Quantidade",
+        quantityHintText: "Quantidade (kg)",
+        quantityFieldController: _quantityController,
         primaryButtonText: productId == null ? "Adicionar" : "Editar",
         secondaryButtonText: "Cancelar",
         onPrimaryButtonTapped: () {
@@ -110,45 +110,39 @@ class _StockListPageState extends State<StockListPage> {
               ),
             );
           } else if (state is LoadedProductState) {
-            return Stack(
-              children: [
-                ListView.builder(
-                  itemCount: state.products.length,
-                  itemBuilder: (ctx, index) {
-                    final product = state.products[index];
-                    return InventoryItem(
-                      name: product.name,
-                      quantity: double.parse(product.quantity),
-                      onEdit: (BuildContext context) {
-                        _nameController.text = product.name;
-                        _quantityController.text = product.quantity;
-                        _addOrEditProduct(
-                          context,
-                          productId: product.id,
-                        );
-                      },
-                      onRemove: (BuildContext context) {
-                        _bloc.add(RemoveProductEvent(id: product.id!));
-                        _bloc.add(GetAllProductsEvent());
-                      },
+            return ListView.builder(
+              itemCount: state.products.length,
+              itemBuilder: (ctx, index) {
+                final product = state.products[index];
+                return InventoryItem(
+                  name: product.name,
+                  quantity: double.parse(product.quantity),
+                  onEdit: (BuildContext context) {
+                    _nameController.text = product.name;
+                    _quantityController.text = product.quantity;
+                    _addOrEditProduct(
+                      context,
+                      productId: product.id,
                     );
                   },
-                ),
-              ],
+                  onRemove: (BuildContext context) {
+                    _bloc.add(RemoveProductEvent(id: product.id!));
+                    _bloc.add(GetAllProductsEvent());
+                  },
+                );
+              },
             );
           } else if (state is ErrorProductState) {
+            final message = state.message;
+
             return Center(
               child: Text(
-                "Erro ao carregar a lista de produtos: ${state.message}",
-              ),
-            );
-          } else {
-            return const Center(
-              child: Text(
-                "Nenhum produto encontrado",
+                message,
                 style: AppTextStyles.medium14,
               ),
             );
+          } else {
+            return const SizedBox.shrink();
           }
         },
       ),

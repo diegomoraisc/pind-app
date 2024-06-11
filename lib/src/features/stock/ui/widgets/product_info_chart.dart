@@ -5,15 +5,28 @@ class ProductInfoChart extends StatelessWidget {
   final String productName;
   final double productQuantity;
   const ProductInfoChart({
-    super.key,
+    Key? key,
     required this.productName,
     required this.productQuantity,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isVisible =
-        productName.isNotEmpty && productQuantity > 0.0 ? true : false;
+    bool isVisible = productName.isNotEmpty && productQuantity > 0.0;
+
+    BoxDecoration boxDecoration = BoxDecoration(
+      color: Colors.white,
+      shape: BoxShape.circle,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.2),
+          blurRadius: 2.5,
+          spreadRadius: .5,
+          offset: const Offset(0, 1.5),
+        ),
+      ],
+    );
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       curve: Curves.easeInOut,
@@ -21,20 +34,7 @@ class ProductInfoChart extends StatelessWidget {
         minHeight: isVisible ? 150 : 0,
         minWidth: isVisible ? 150 : 0,
       ),
-      decoration: BoxDecoration(
-        color: isVisible ? Colors.white : Colors.transparent,
-        shape: BoxShape.circle,
-        boxShadow: isVisible
-            ? [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 2.5,
-                  spreadRadius: .5,
-                  offset: const Offset(0, 1.5),
-                ),
-              ]
-            : [],
-      ),
+      decoration: isVisible ? boxDecoration : null,
       child: isVisible
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
