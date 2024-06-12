@@ -2,27 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/widgets/box_text.dart';
 
-class ClientInfoDialog extends StatelessWidget {
+class CustomerInfo extends StatelessWidget {
   final String title;
-  final String clientName;
+  final String customerName;
   final String cnpj;
-  final String clientAdress;
-  final String clientEmail;
-  final String clientPhoneNumber;
+  final String customerAdress;
+  final String customerEmail;
+  final String customerPhoneNumber;
 
-  const ClientInfoDialog({
+  const CustomerInfo({
     Key? key,
     required this.title,
-    required this.clientName,
+    required this.customerName,
     required this.cnpj,
-    required this.clientAdress,
-    required this.clientEmail,
-    required this.clientPhoneNumber,
+    required this.customerAdress,
+    required this.customerEmail,
+    required this.customerPhoneNumber,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
 
     return Dialog(
       surfaceTintColor: Colors.transparent,
@@ -43,19 +42,19 @@ class ClientInfoDialog extends StatelessWidget {
               child: Column(
                 children: [
                   BoxText(
-                    text: clientName,
+                    text: customerName,
                   ),
                   BoxText(
                     text: cnpj,
                   ),
                   BoxText(
-                    text: clientAdress,
+                    text: customerAdress,
                   ),
                   BoxText(
-                    text: clientEmail,
+                    text: customerEmail,
                   ),
                   BoxText(
-                    text: clientPhoneNumber,
+                    text: customerPhoneNumber,
                   ),
                 ],
               ),

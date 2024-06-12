@@ -1,12 +1,12 @@
-import 'package:pind_app/src/features/customers/interactor/entities/client_entity.dart';
-import 'package:pind_app/src/features/customers/interactor/states/client_state.dart';
+import 'package:pind_app/src/features/customers/interactor/entities/customer_entity.dart';
+import 'package:pind_app/src/features/customers/interactor/states/customer_state.dart';
 
-abstract class ClientRepository {
-  Future<ClientState> addClient(ClientEntity newClient);
+abstract class CustomerRepository {
+  Future<CustomerState> addCustomer(CustomerEntity newCustomer);
 
-  Future<ClientState> editClient(String id, ClientEntity updatedClient);
+  Future<CustomerState> editCustomer(String id, CustomerEntity updatedCustomer);
 
-  Future<ClientState> removeClient(String id);
+  Future<CustomerState> removeCustomer(String id);
 
-  Future<ClientState> getAllClients();
+  Future<CustomerState> getAllCustomers();
 }

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../customers/ui/customers_page.dart';
 import '../../profile/ui/profile_page.dart';
-import '../../requests/ui/requests_page.dart';
+import '../../orders/ui/orders_page.dart';
 import '../../stock/ui/stock_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           const StockPage(),
-          const RequestsPage(),
+          const OrdersPage(),
           const CustomersPage(),
           ProfilePage(
             userName: userName,

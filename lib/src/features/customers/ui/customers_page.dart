@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
-import 'package:pind_app/src/features/customers/interactor/blocs/client_bloc.dart';
-import 'package:pind_app/src/features/customers/interactor/entities/client_entity.dart';
-import 'package:pind_app/src/features/customers/interactor/events/client_event.dart';
-import 'package:pind_app/src/features/customers/interactor/states/client_state.dart';
-import 'package:pind_app/src/features/customers/ui/widgets/client_card.dart';
-import 'package:pind_app/src/features/customers/ui/widgets/client_form_dialog.dart';
-import 'package:pind_app/src/features/customers/ui/widgets/client_info_dialog.dart';
+import 'package:pind_app/src/features/customers/interactor/blocs/customer_bloc.dart';
+import 'package:pind_app/src/features/customers/interactor/entities/customer_entity.dart';
+import 'package:pind_app/src/features/customers/interactor/events/customer_event.dart';
+import 'package:pind_app/src/features/customers/interactor/states/customer_state.dart';
+import 'package:pind_app/src/features/customers/ui/widgets/customer_card.dart';
+import 'package:pind_app/src/features/customers/ui/widgets/customer_form_dialog.dart';
+import 'package:pind_app/src/features/customers/ui/widgets/customer_info_dialog.dart';
 import 'package:uuid/uuid.dart';
 
 class CustomersPage extends StatefulWidget {
@@ -21,7 +21,7 @@ class CustomersPage extends StatefulWidget {
 }
 
 class _CustomersPageState extends State<CustomersPage> {
-  final _bloc = getIt.get<ClientBloc>();
+  final _bloc = getIt.get<CustomerBloc>();
   final _nameController = TextEditingController();
   final _cnpjController = TextEditingController();
   final _adressController = TextEditingController();
@@ -31,7 +31,7 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   void initState() {
     super.initState();
-    _bloc.add(GetAllClientsEvent());
+    _bloc.add(GetAllCustomersEvent());
   }
 
   @override
@@ -52,43 +52,44 @@ class _CustomersPageState extends State<CustomersPage> {
     _phoneController.clear();
   }
 
-  void _showClientInfo(BuildContext context, {required ClientEntity client}) {
+  void _showCustomerInfo(BuildContext context,
+      {required CustomerEntity customer}) {
     showDialog(
       context: context,
-      builder: (builder) => ClientInfoDialog(
-        title: client.name,
-        clientName: client.name,
-        cnpj: client.cnpj,
-        clientAdress: client.adress,
-        clientEmail: client.email,
-        clientPhoneNumber: client.phoneNumber,
+      builder: (builder) => CustomerInfo(
+        title: customer.name,
+        customerName: customer.name,
+        cnpj: customer.cnpj,
+        customerAdress: customer.adress,
+        customerEmail: customer.email,
+        customerPhoneNumber: customer.phoneNumber,
       ),
     );
   }
 
-  void _addOrEditClient(BuildContext context, {String? clientId}) {
+  void _addOrEditCustomer(BuildContext context, {String? customerId}) {
     showDialog(
       context: context,
-      builder: (context) => ClientFormDialog(
-        title: clientId == null
+      builder: (context) => CustomerForm(
+        title: customerId == null
             ? "Adicionar novo cliente"
             : "Editar informações de um cliente",
-        clientName: "Nome",
+        customerName: "Nome",
         nameHintText: "Nome do cliente",
-        clientNameFieldController: _nameController,
+        nameFieldController: _nameController,
         cnpj: "CNPJ",
         cnpjHintText: "CNPJ do cliente",
         cnpjFieldController: _cnpjController,
-        clientAdress: "Endereço",
+        customerAdress: "Endereço",
         adressHintText: "Endereço do cliente",
         adressFieldController: _adressController,
-        clientEmail: "Email",
+        customerEmail: "Email",
         emailHintText: "Email do cliente",
         emailFieldController: _emailController,
-        clientPhoneNumber: "Telefone",
+        customerPhoneNumber: "Telefone",
         phoneNumberHintText: "Telefone para contato",
         phoneNumberFieldController: _phoneController,
-        primaryButtonText: clientId == null ? "Adicionar" : "Editar",
+        primaryButtonText: customerId == null ? "Adicionar" : "Editar",
         secondaryButtonText: "Cancelar",
         onPrimaryButtonTapped: () {
           final name = _nameController.text;
@@ -96,12 +97,12 @@ class _CustomersPageState extends State<CustomersPage> {
           final adress = _adressController.text;
           final email = _emailController.text;
           final phoneNumber = _phoneController.text;
-          if (clientId != null) {
+          if (customerId != null) {
             _bloc.add(
-              UpdateClientEvent(
-                id: clientId,
-                updatedClient: ClientEntity(
-                  id: clientId,
+              UpdateCustomerEvent(
+                id: customerId,
+                updatedCustomer: CustomerEntity(
+                  id: customerId,
                   name: name,
                   cnpj: cnpj,
                   adress: adress,
@@ -112,8 +113,8 @@ class _CustomersPageState extends State<CustomersPage> {
             );
           } else {
             _bloc.add(
-              AddClientEvent(
-                client: ClientEntity(
+              AddCustomerEvent(
+                customer: CustomerEntity(
                   id: const Uuid().v1(),
                   name: name,
                   cnpj: cnpj,
@@ -126,7 +127,7 @@ class _CustomersPageState extends State<CustomersPage> {
           }
           context.pop();
           _clearTextFields();
-          _bloc.add(GetAllClientsEvent());
+          _bloc.add(GetAllCustomersEvent());
         },
         onSecondaryButtonTapped: () {
           context.pop();
@@ -141,40 +142,41 @@ class _CustomersPageState extends State<CustomersPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: BlocBuilder<ClientBloc, ClientState>(
+      body: BlocBuilder<CustomerBloc, CustomerState>(
         bloc: _bloc,
         builder: (context, state) {
-          if (state is LoadingClientState) {
+          if (state is LoadingCustomerState) {
             return Center(
               child: CustomProgressIndicator(
                 color: theme.colorScheme.tertiary,
               ),
             );
-          } else if (state is LoadedClientState) {
+          } else if (state is LoadedCustomerState) {
             return ListView.builder(
-              itemCount: state.clients.length,
+              itemCount: state.customers.length,
               itemBuilder: (context, index) {
-                final client = state.clients[index];
-                return ClientCard(
-                  name: client.name,
-                  adress: client.adress,
-                  onLongPress: () => _showClientInfo(context, client: client),
+                final customer = state.customers[index];
+                return CustomerCard(
+                  name: customer.name,
+                  adress: customer.adress,
+                  onLongPress: () =>
+                      _showCustomerInfo(context, customer: customer),
                   onEdit: (context) {
-                    _nameController.text = client.name;
-                    _cnpjController.text = client.cnpj;
-                    _adressController.text = client.adress;
-                    _emailController.text = client.email;
-                    _phoneController.text = client.phoneNumber;
-                    _addOrEditClient(context, clientId: client.id);
+                    _nameController.text = customer.name;
+                    _cnpjController.text = customer.cnpj;
+                    _adressController.text = customer.adress;
+                    _emailController.text = customer.email;
+                    _phoneController.text = customer.phoneNumber;
+                    _addOrEditCustomer(context, customerId: customer.id);
                   },
                   onRemove: (context) {
-                    _bloc.add(RemoveClientEvent(id: client.id!));
-                    _bloc.add(GetAllClientsEvent());
+                    _bloc.add(RemoveCustomerEvent(id: customer.id!));
+                    _bloc.add(GetAllCustomersEvent());
                   },
                 );
               },
             );
-          } else if (state is ErrorClientState) {
+          } else if (state is ErrorCustomerState) {
             final message = state.message;
             return Center(
               child: Text(
@@ -188,7 +190,7 @@ class _CustomersPageState extends State<CustomersPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _addOrEditClient(context),
+        onPressed: () => _addOrEditCustomer(context),
         backgroundColor: theme.colorScheme.primary,
         child: const Icon(
           Icons.add,

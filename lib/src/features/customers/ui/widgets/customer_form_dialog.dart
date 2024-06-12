@@ -3,29 +3,48 @@ import 'package:pind_app/src/common/constants/app_colors.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/widgets/custom_text_form_field.dart';
 
-class ProductDialog extends StatelessWidget {
+class CustomerForm extends StatelessWidget {
   final String title;
+  final String customerName;
+  final String nameHintText;
+  final TextEditingController nameFieldController;
+  final String cnpj;
+  final String cnpjHintText;
+  final TextEditingController cnpjFieldController;
+  final String customerAdress;
+  final String adressHintText;
+  final TextEditingController adressFieldController;
+  final String customerEmail;
+  final String emailHintText;
+  final TextEditingController emailFieldController;
+  final String customerPhoneNumber;
+  final String phoneNumberHintText;
+  final TextEditingController phoneNumberFieldController;
   final String primaryButtonText;
   final String secondaryButtonText;
-  final String productName;
-  final String productHintText;
-  final TextEditingController productFieldController;
-  final String quantity;
-  final String quantityHintText;
-  final TextEditingController quantityFieldController;
   final VoidCallback? onPrimaryButtonTapped;
   final VoidCallback? onSecondaryButtonTapped;
-  const ProductDialog({
+
+  const CustomerForm({
     super.key,
     required this.title,
+    required this.customerName,
+    required this.nameHintText,
+    required this.nameFieldController,
+    required this.cnpj,
+    required this.cnpjHintText,
+    required this.cnpjFieldController,
     required this.primaryButtonText,
     required this.secondaryButtonText,
-    required this.productName,
-    required this.productHintText,
-    required this.quantity,
-    required this.quantityHintText,
-    required this.productFieldController,
-    required this.quantityFieldController,
+    required this.customerAdress,
+    required this.adressHintText,
+    required this.adressFieldController,
+    required this.phoneNumberHintText,
+    required this.customerEmail,
+    required this.emailHintText,
+    required this.emailFieldController,
+    required this.customerPhoneNumber,
+    required this.phoneNumberFieldController,
     this.onPrimaryButtonTapped,
     this.onSecondaryButtonTapped,
   });
@@ -41,22 +60,46 @@ class ProductDialog extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 20, left: 20),
-              child: Text(title.toUpperCase(), style: AppTextStyles.medium14),
+              child: Text(
+                title.toUpperCase(),
+                style: AppTextStyles.medium14,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   CustomTextFormField(
-                    controller: productFieldController,
-                    fieldName: productName,
-                    hintText: productHintText,
+                    controller: nameFieldController,
+                    fieldName: customerName,
+                    hintText: nameHintText,
                     borderColor: AppColors.grey,
                   ),
                   CustomTextFormField(
-                    controller: quantityFieldController,
-                    fieldName: quantity,
-                    hintText: quantityHintText,
+                    controller: cnpjFieldController,
+                    keyboardType: TextInputType.number,
+                    fieldName: cnpj,
+                    hintText: cnpjHintText,
+                    borderColor: AppColors.grey,
+                  ),
+                  CustomTextFormField(
+                    controller: adressFieldController,
+                    fieldName: customerAdress,
+                    hintText: adressHintText,
+                    borderColor: AppColors.grey,
+                  ),
+                  CustomTextFormField(
+                    controller: emailFieldController,
+                    keyboardType: TextInputType.emailAddress,
+                    fieldName: customerEmail,
+                    hintText: emailHintText,
+                    borderColor: AppColors.grey,
+                  ),
+                  CustomTextFormField(
+                    controller: phoneNumberFieldController,
+                    keyboardType: TextInputType.phone,
+                    fieldName: customerPhoneNumber,
+                    hintText: phoneNumberHintText,
                     borderColor: AppColors.grey,
                   ),
                 ],

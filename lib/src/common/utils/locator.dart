@@ -2,8 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:pind_app/src/features/auth/interactor/blocs/auth_bloc.dart';
 import 'package:pind_app/src/features/auth/interactor/services/auth_service.dart';
 import 'package:pind_app/src/features/auth/data/services/firebase_auth_service.dart';
-import 'package:pind_app/src/features/customers/data/repositories/client_db_repository.dart';
-import 'package:pind_app/src/features/customers/interactor/blocs/client_bloc.dart';
+import 'package:pind_app/src/features/customers/data/repositories/customer_db_repository.dart';
+import 'package:pind_app/src/features/customers/interactor/blocs/customer_bloc.dart';
 import 'package:pind_app/src/features/customers/interactor/repositories/client_repository.dart';
 import 'package:pind_app/src/features/stock/data/repositories/stock_db_repository.dart';
 import 'package:pind_app/src/features/stock/interactor/blocs/product_bloc.dart';
@@ -20,8 +20,8 @@ void setup() {
     () => ProductDbRepository(),
   );
 
-  getIt.registerLazySingleton<ClientRepository>(
-    () => ClientDbRepository(),
+  getIt.registerLazySingleton<CustomerRepository>(
+    () => CustomerDbRepository(),
   );
 
   getIt.registerFactory<AuthBloc>(
@@ -36,9 +36,9 @@ void setup() {
     ),
   );
 
-  getIt.registerFactory<ClientBloc>(
-    () => ClientBloc(
-      getIt.get<ClientRepository>(),
+  getIt.registerFactory<CustomerBloc>(
+    () => CustomerBloc(
+      getIt.get<CustomerRepository>(),
     ),
   );
 }

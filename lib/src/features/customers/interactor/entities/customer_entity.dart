@@ -1,4 +1,4 @@
-class ClientEntity {
+class CustomerEntity {
   final String? id;
   final String name;
   final String cnpj;
@@ -6,7 +6,7 @@ class ClientEntity {
   final String email;
   final String phoneNumber;
 
-  const ClientEntity({
+  const CustomerEntity({
     this.id,
     required this.name,
     required this.cnpj,
@@ -15,15 +15,16 @@ class ClientEntity {
     required this.phoneNumber,
   });
 
-  ClientEntity copyWith({
+  CustomerEntity copyWith({
     String? id,
     String? name,
     String? cnpj,
     String? adress,
     String? email,
     String? phoneNumber,
+    List<String>? orderIds,
   }) {
-    return ClientEntity(
+    return CustomerEntity(
       id: id ?? this.id,
       name: name ?? this.name,
       cnpj: cnpj ?? this.cnpj,

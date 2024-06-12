@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
-import 'package:pind_app/src/features/stock/ui/widgets/product_dialog.dart';
+import 'package:pind_app/src/features/stock/ui/widgets/product_form.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
-import 'package:pind_app/src/features/stock/ui/widgets/inventory_item.dart';
+import 'package:pind_app/src/features/stock/ui/widgets/stock_item.dart';
 import 'package:pind_app/src/features/stock/interactor/blocs/product_bloc.dart';
 import 'package:pind_app/src/features/stock/interactor/entities/product_entity.dart';
 import 'package:pind_app/src/features/stock/interactor/events/product_event.dart';
@@ -48,7 +48,7 @@ class _StockListPageState extends State<StockListPage> {
   }) {
     showDialog(
       context: context,
-      builder: (context) => ProductDialog(
+      builder: (context) => ProductForm(
         title: productId == null ? "Novo Produto" : "Editar Produto",
         productName: "Nome",
         productHintText: "Nome do produto",
@@ -114,7 +114,7 @@ class _StockListPageState extends State<StockListPage> {
               itemCount: state.products.length,
               itemBuilder: (ctx, index) {
                 final product = state.products[index];
-                return InventoryItem(
+                return StockItem(
                   name: product.name,
                   quantity: double.parse(product.quantity),
                   onEdit: (BuildContext context) {

@@ -1,59 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:pind_app/src/common/constants/app_colors.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
-class InventoryItem extends StatefulWidget {
+class CustomerCard extends StatelessWidget {
   final String name;
-  final double quantity;
+  final String adress;
   final void Function(BuildContext) onEdit;
   final void Function(BuildContext) onRemove;
-  const InventoryItem({
+  final void Function()? onLongPress;
+  const CustomerCard({
     Key? key,
     required this.name,
-    required this.quantity,
+    required this.adress,
     required this.onEdit,
     required this.onRemove,
+    this.onLongPress,
   }) : super(key: key);
-
-  @override
-  State<InventoryItem> createState() => _InventoryItemState();
-}
-
-class _InventoryItemState extends State<InventoryItem> {
-  double _quantity = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _quantity = widget.quantity;
-  }
-
-  void updateQuantity(double newQuantity) {
-    setState(() {
-      _quantity = newQuantity;
-    });
-  }
-
-  Color stockColor(double quantity) {
-    if (quantity > 100) {
-      return AppColors.primary;
-    } else if (quantity > 30) {
-      return Colors.amber.shade300;
-    } else {
-      return Colors.red;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     BorderRadius borderRadius = BorderRadius.circular(12);
+    final theme = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.only(
         top: 10,
         right: 20,
-        bottom: 10,
         left: 20,
       ),
       child: Card(
@@ -77,7 +49,7 @@ class _InventoryItemState extends State<InventoryItem> {
                 motion: const BehindMotion(),
                 children: [
                   SlidableAction(
-                    onPressed: widget.onEdit,
+                    onPressed: onEdit,
                     icon: Icons.edit,
                     foregroundColor: Colors.grey,
                     backgroundColor: Colors.transparent,
@@ -87,7 +59,7 @@ class _InventoryItemState extends State<InventoryItem> {
                       topRight: Radius.circular(12),
                       bottomRight: Radius.circular(12),
                     ),
-                    onPressed: widget.onRemove,
+                    onPressed: onRemove,
                     icon: Icons.delete,
                     foregroundColor: Colors.red,
                     backgroundColor: Colors.transparent,
@@ -95,30 +67,34 @@ class _InventoryItemState extends State<InventoryItem> {
                 ],
               ),
               child: Container(
-                height: 100,
+                height: 90,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: borderRadius,
                 ),
                 child: Center(
                   child: ListTile(
-                    leading: Container(
-                      height: 40,
-                      width: 7,
-                      decoration: BoxDecoration(
-                        color: stockColor(_quantity),
-                        borderRadius: BorderRadius.circular(50),
+                    onLongPress: onLongPress,
+                    leading: CircleAvatar(
+                      backgroundColor: theme.colorScheme.primary,
+                      child: const Icon(
+                        Icons.person,
+                        color: Colors.white,
                       ),
                     ),
                     title: Text(
-                      widget.name,
+                      name,
                       style: AppTextStyles.semiBold20.apply(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                     subtitle: Text(
-                      "${widget.quantity.toStringAsFixed(1)} (kg)",
+                      adress,
                       style: AppTextStyles.medium14,
+                    ),
+                    trailing: Icon(
+                      Icons.info_rounded,
+                      color: theme.colorScheme.primary,
                     ),
                   ),
                 ),
