@@ -12,6 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool? obscureText;
   final String? helperText;
+  final TextStyle? helperStyle;
   final FormFieldValidator<String>? validator;
   final defaultBorder = const OutlineInputBorder(
     borderRadius: BorderRadius.all(
@@ -30,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.helperText,
     this.borderColor,
+    this.helperStyle,
   }) : super(key: key);
 
   @override
@@ -56,6 +58,7 @@ class CustomTextFormField extends StatelessWidget {
             decoration: InputDecoration(
               suffixIcon: suffixIcon,
               helperText: helperText,
+              helperStyle: helperStyle,
               helperMaxLines: 3,
               hintText: hintText,
               hintStyle: AppTextStyles.medium14,

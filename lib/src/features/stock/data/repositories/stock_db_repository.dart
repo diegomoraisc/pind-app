@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pind_app/src/features/stock/data/adapters/product_adapter.dart';
 import 'package:pind_app/src/common/database/firestore_db.dart';
@@ -53,6 +55,7 @@ class ProductDbRepository implements ProductRepository {
       }
       return LoadedProductState(products);
     } catch (e) {
+      log(e.toString());
       return ErrorProductState(const UnknownException().message);
     }
   }

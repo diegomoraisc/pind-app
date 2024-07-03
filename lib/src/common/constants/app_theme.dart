@@ -38,6 +38,12 @@ class AppTheme {
         background: AppColors.background,
         brightness: Brightness.light,
       ),
+      expansionTileTheme: const ExpansionTileThemeData(
+        backgroundColor: Colors.white,
+        collapsedBackgroundColor: Colors.white,
+        iconColor: AppColors.primary,
+        collapsedIconColor: AppColors.primary,
+      ),
     );
   }
 }

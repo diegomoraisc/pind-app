@@ -7,6 +7,9 @@ import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/src/features/customers/interactor/blocs/customer_bloc.dart';
 import 'package:pind_app/src/features/customers/interactor/events/customer_event.dart';
 import 'package:pind_app/src/features/customers/interactor/states/customer_state.dart';
+import 'package:pind_app/src/features/orders/interactor/blocs/order_bloc.dart';
+import 'package:pind_app/src/features/orders/interactor/events/order_event.dart';
+import 'package:pind_app/src/features/orders/interactor/states/order_state.dart';
 import 'package:pind_app/src/features/stock/ui/widgets/chart_info_card.dart';
 import 'package:pind_app/src/features/stock/ui/widgets/chart_info_card_item.dart';
 import 'package:pind_app/src/features/stock/ui/widgets/stock_chart.dart';
@@ -25,18 +28,21 @@ class StockChartPage extends StatefulWidget {
 class _StockChartPageState extends State<StockChartPage> {
   final _productBloc = getIt.get<ProductBloc>();
   final _clientBloc = getIt.get<CustomerBloc>();
+  final _orderBloc = getIt.get<OrderBloc>();
   int? touchedIndex;
   String? productName;
   double? productQuantity;
   List<ProductEntity> products = [];
   double totalQuantity = 0.0;
   int clientCount = 0;
+  int ordersCount = 0;
 
   @override
   void initState() {
     super.initState();
     _productBloc.add(GetAllProductsEvent());
     _clientBloc.add(GetAllCustomersEvent());
+    _orderBloc.add(GetAllOrdersEvent());
   }
 
   void _updateClientCount(int count) {
@@ -56,6 +62,14 @@ class _StockChartPageState extends State<StockChartPage> {
                 .map((product) => double.tryParse(product.quantity) ?? 0.0)
                 .reduce((value, element) => value + element)
             : 0.0;
+      });
+    });
+  }
+
+  void _updateOrdersCount(int count) {
+    Future.microtask(() {
+      setState(() {
+        ordersCount = count;
       });
     });
   }
@@ -80,6 +94,14 @@ class _StockChartPageState extends State<StockChartPage> {
             listener: (context, state) {
               if (state is LoadedCustomerState) {
                 _updateClientCount(state.customers.length);
+              }
+            },
+          ),
+          BlocListener<OrderBloc, OrderState>(
+            bloc: _orderBloc,
+            listener: (context, state) {
+              if (state is LoadedOrderState) {
+                _updateOrdersCount(state.orders.length);
               }
             },
           ),
@@ -150,7 +172,7 @@ class _StockChartPageState extends State<StockChartPage> {
                               ),
                               ChartInfoCardItem(
                                 title: "Pedidos",
-                                subTitle: "0",
+                                subTitle: ordersCount.toString(),
                                 icon: FontAwesomeIcons.truckFast,
                               ),
                             ],
