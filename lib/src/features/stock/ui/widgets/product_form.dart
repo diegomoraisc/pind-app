@@ -32,81 +32,83 @@ class ProductForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      surfaceTintColor: Colors.transparent,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20, left: 20),
-              child: Text(title.toUpperCase(), style: AppTextStyles.medium14),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  CustomTextFormField(
-                    controller: productFieldController,
-                    fieldName: productName,
-                    hintText: productHintText,
-                    borderColor: AppColors.grey,
-                  ),
-                  CustomTextFormField(
-                    controller: quantityFieldController,
-                    fieldName: quantity,
-                    hintText: quantityHintText,
-                    borderColor: AppColors.grey,
-                  ),
-                ],
+    return Dialog.fullscreen(
+      backgroundColor: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 20, left: 20),
+            child: Text(title.toUpperCase(), style: AppTextStyles.medium14),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: productFieldController,
+                      fieldName: productName,
+                      hintText: productHintText,
+                      borderColor: AppColors.grey,
+                    ),
+                    CustomTextFormField(
+                      controller: quantityFieldController,
+                      fieldName: quantity,
+                      hintText: quantityHintText,
+                      borderColor: AppColors.grey,
+                    ),
+                  ],
+                ),
               ),
             ),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(
-                        color: Color(0xFFC4C4C4),
-                      ),
+          ),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(
+                      color: Color(0xFFC4C4C4),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: onSecondaryButtonTapped,
+                  child: Text(
+                    secondaryButtonText,
+                    style: AppTextStyles.medium14.apply(
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.tertiary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: onSecondaryButtonTapped,
+                    onPressed: onPrimaryButtonTapped,
                     child: Text(
-                      secondaryButtonText,
-                      style: AppTextStyles.medium14.apply(
-                        color: Colors.black54,
-                      ),
+                      primaryButtonText,
+                      style:
+                          AppTextStyles.medium14.apply(color: Colors.white),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.tertiary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: onPrimaryButtonTapped,
-                      child: Text(
-                        primaryButtonText,
-                        style:
-                            AppTextStyles.medium14.apply(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

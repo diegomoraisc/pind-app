@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import '../../customers/ui/customers_page.dart';
 import '../../profile/ui/profile_page.dart';
 import '../../orders/ui/orders_page.dart';
@@ -54,6 +55,7 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Text(
           "Olá, ${userName.split(' ')[0]}",
+          style: AppTextStyles.semiBold20,
         ),
         actions: [
           IconButton(

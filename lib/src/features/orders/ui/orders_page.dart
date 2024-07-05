@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +30,18 @@ class _OrdersPageState extends State<OrdersPage> {
   String? _selectedProductId;
   String? _selectedCustomerId;
 
+  @override
+  void initState() {
+    super.initState();
+    _bloc.add(GetAllOrdersEvent());
+  }
+
+  @override
+  void dispose() {
+    _quantityController.dispose();
+    super.dispose();
+  }
+
   Future<String> _getProductName(String productId) async {
     final productSnapshot =
         await FirestoreDb.get().collection('products').doc(productId).get();
@@ -51,15 +64,7 @@ class _OrdersPageState extends State<OrdersPage> {
     return 'Cliente não encontrado';
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _bloc.add(GetAllOrdersEvent());
-  }
-
-  void _addOrder(
-    BuildContext context,
-  ) {
+  void _addOrder(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => OrderForm(
@@ -116,12 +121,15 @@ class _OrdersPageState extends State<OrdersPage> {
               ),
             );
           } else if (state is LoadedOrderState) {
+            state.orders.sort((a, b) => b.date.compareTo(a.date));
+
             return ListView.builder(
+              padding: const EdgeInsets.only(bottom: 80),
               itemCount: state.orders.length,
               itemBuilder: (context, index) {
                 final order = state.orders[index];
                 return OrderExpansionTile(
-                  title: "Pedido ${order.id}",
+                  title: order.id!.substring(0, 8),
                   subtitle: FutureBuilder<String>(
                     future: _getCustomerName(order.customerId),
                     builder: (context, snapshot) {
@@ -155,6 +163,9 @@ class _OrdersPageState extends State<OrdersPage> {
                   orderDate: DateFormat('dd/MM/yyyy').format(
                     DateTime.fromMillisecondsSinceEpoch(order.date),
                   ),
+                  onRemove: (context) {
+                    _bloc.add(RemoveOrderEvent(id: order.id!));
+                  },
                 );
               },
             );

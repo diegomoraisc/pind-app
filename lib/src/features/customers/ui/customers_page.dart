@@ -153,13 +153,14 @@ class _CustomersPageState extends State<CustomersPage> {
             );
           } else if (state is LoadedCustomerState) {
             return ListView.builder(
+              padding: const EdgeInsets.only(bottom: 80),
               itemCount: state.customers.length,
               itemBuilder: (context, index) {
                 final customer = state.customers[index];
                 return CustomerCard(
                   name: customer.name,
                   adress: customer.adress,
-                  onLongPress: () =>
+                  onTap: () =>
                       _showCustomerInfo(context, customer: customer),
                   onEdit: (context) {
                     _nameController.text = customer.name;

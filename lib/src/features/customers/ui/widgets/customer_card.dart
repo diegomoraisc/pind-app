@@ -7,14 +7,14 @@ class CustomerCard extends StatelessWidget {
   final String adress;
   final void Function(BuildContext) onEdit;
   final void Function(BuildContext) onRemove;
-  final void Function()? onLongPress;
+  final void Function()? onTap;
   const CustomerCard({
     Key? key,
     required this.name,
     required this.adress,
     required this.onEdit,
     required this.onRemove,
-    this.onLongPress,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -74,7 +74,7 @@ class CustomerCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: ListTile(
-                    onLongPress: onLongPress,
+                    onTap: onTap,
                     leading: CircleAvatar(
                       backgroundColor: theme.colorScheme.primary,
                       child: const Icon(

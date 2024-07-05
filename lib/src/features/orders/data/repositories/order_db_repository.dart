@@ -62,7 +62,12 @@ class OrderDbRepository implements OrderRepository {
   }
 
   @override
-  Future<OrderState> removeOrder(String id) {
-    throw UnimplementedError();
+  Future<OrderState> removeOrder(String id) async {
+    try {
+      await ordersCollection.doc(id).delete();
+      return RemovedOrderState(id);
+    } catch (e) {
+      throw const UnknownException();
+    }
   }
 }

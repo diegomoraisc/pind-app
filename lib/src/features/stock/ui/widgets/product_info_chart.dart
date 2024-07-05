@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
-class ProductInfoChart extends StatelessWidget {
+class ProductInfoChart extends StatefulWidget {
   final String productName;
-  final double productQuantity;
+  final double? productQuantity;
+
   const ProductInfoChart({
     Key? key,
     required this.productName,
@@ -11,8 +12,55 @@ class ProductInfoChart extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  ProductInfoChartState createState() => ProductInfoChartState();
+}
+
+class ProductInfoChartState extends State<ProductInfoChart>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _fadeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+
+    _toggleVisibility();
+  }
+
+  @override
+  void didUpdateWidget(ProductInfoChart oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _toggleVisibility();
+  }
+
+  void _toggleVisibility() {
+    if (widget.productName.isNotEmpty && widget.productQuantity! > 0.0) {
+      _animationController.forward();
+    } else {
+      _animationController.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    bool isVisible = productName.isNotEmpty && productQuantity > 0.0;
+    bool isVisible =
+        widget.productName.isNotEmpty && widget.productQuantity! > 0.0;
 
     BoxDecoration boxDecoration = BoxDecoration(
       color: Colors.white,
@@ -27,29 +75,32 @@ class ProductInfoChart extends StatelessWidget {
       ],
     );
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
-      curve: Curves.easeInOut,
-      constraints: BoxConstraints(
-        minHeight: isVisible ? 150 : 0,
-        minWidth: isVisible ? 150 : 0,
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        constraints: BoxConstraints(
+          minHeight: isVisible ? 150 : 1,
+          minWidth: isVisible ? 150 : 1,
+        ),
+        decoration: boxDecoration,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              widget.productName,
+              style: AppTextStyles.semiBold20,
+            ),
+            Text(
+              widget.productQuantity != null && widget.productQuantity! > 0.0
+                  ? "${widget.productQuantity!.toStringAsFixed(0)} kg"
+                  : "",
+              style: AppTextStyles.medium14,
+            ),
+          ],
+        ),
       ),
-      decoration: isVisible ? boxDecoration : null,
-      child: isVisible
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  productName,
-                  style: AppTextStyles.semiBold20,
-                ),
-                Text(
-                  "${productQuantity.toStringAsFixed(0)} kg",
-                  style: AppTextStyles.medium14,
-                ),
-              ],
-            )
-          : null,
     );
   }
 }

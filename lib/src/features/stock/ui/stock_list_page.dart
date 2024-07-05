@@ -111,6 +111,7 @@ class _StockListPageState extends State<StockListPage> {
             );
           } else if (state is LoadedProductState) {
             return ListView.builder(
+              padding: const EdgeInsets.only(bottom: 80),
               itemCount: state.products.length,
               itemBuilder: (ctx, index) {
                 final product = state.products[index];

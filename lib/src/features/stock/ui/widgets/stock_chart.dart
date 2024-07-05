@@ -46,7 +46,7 @@ class StockChart extends StatelessWidget {
           Center(
             child: ProductInfoChart(
               productName: productName ?? "",
-              productQuantity: productQuantity ?? 0.0,
+              productQuantity: productQuantity,
             ),
           ),
           PieChart(

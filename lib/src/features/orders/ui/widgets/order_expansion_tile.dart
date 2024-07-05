@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class OrderExpansionTile extends StatefulWidget {
@@ -7,6 +8,8 @@ class OrderExpansionTile extends StatefulWidget {
   final Widget product;
   final String quantity;
   final String orderDate;
+  final Widget? trailing;
+  final void Function(BuildContext) onRemove;
 
   const OrderExpansionTile({
     super.key,
@@ -15,6 +18,8 @@ class OrderExpansionTile extends StatefulWidget {
     required this.product,
     required this.quantity,
     required this.orderDate,
+    required this.onRemove,
+    this.trailing,
   });
 
   @override
@@ -28,60 +33,105 @@ class _OrderExpansionTileState extends State<OrderExpansionTile> {
     final borderRadius = BorderRadius.circular(12.0);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
+      padding: const EdgeInsets.only(top: 7, left: 20, right: 20, bottom: 7),
       child: ClipRRect(
         borderRadius: borderRadius,
         child: Theme(
           data: theme.copyWith(
             dividerColor: Colors.transparent,
           ),
-          child: ExpansionTile(
-            title: Text(
-              widget.title,
-              style: AppTextStyles.semiBold20.copyWith(
-                fontSize: 18,
-              ),
-            ),
-            subtitle: widget.subtitle,
+          child: Stack(
+            clipBehavior: Clip.antiAlias,
             children: [
-              ListTile(
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 7),
-                  child: widget.product
-                ),
-                subtitle: RichText(
-                  text: TextSpan(
-                    text: "Quantidade: ",
-                    style: AppTextStyles.semiBold20.copyWith(
-                      fontSize: 16,
+              Positioned.fill(
+                child: Builder(
+                  builder: (context) => Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: borderRadius,
                     ),
-                    children: [
-                      TextSpan(
-                        text: "${widget.quantity} (kg)",
-                        style: AppTextStyles.medium14.copyWith(
-                          fontSize: 16,
+                  ),
+                ),
+              ),
+              Slidable(
+                key: UniqueKey(),
+                direction: Axis.horizontal,
+                endActionPane: ActionPane(
+                  motion: const BehindMotion(),
+                  children: [
+                    SlidableAction(
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                      ),
+                      onPressed: widget.onRemove,
+                      icon: Icons.delete,
+                      foregroundColor: Colors.red,
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ],
+                ),
+                child: ExpansionTile(
+                  title: RichText(
+                    text: TextSpan(
+                      text: "Pedido",
+                      style: AppTextStyles.semiBold20.copyWith(
+                        fontSize: 18,
+                        color: Colors.grey[850],
+                      ),
+                      children: [
+                        TextSpan(
+                          text: " #${widget.title}",
+                          style: AppTextStyles.semiBold20.copyWith(
+                            fontSize: 18,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  subtitle: widget.subtitle,
+                  children: [
+                    ListTile(
+                      title: Padding(
+                          padding: const EdgeInsets.only(bottom: 7),
+                          child: widget.product),
+                      subtitle: RichText(
+                        text: TextSpan(
+                          text: "Quantidade: ",
+                          style: AppTextStyles.semiBold20.copyWith(
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "${widget.quantity} (kg)",
+                              style: AppTextStyles.medium14.copyWith(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    text: "Data do pedido: ",
-                    style: AppTextStyles.semiBold20.copyWith(
-                      fontSize: 16,
                     ),
-                    children: [
-                      TextSpan(
-                        text: widget.orderDate.toString(),
-                        style: AppTextStyles.medium14.copyWith(
-                          fontSize: 16,
+                    ListTile(
+                      title: RichText(
+                        text: TextSpan(
+                          text: "Data do pedido: ",
+                          style: AppTextStyles.semiBold20.copyWith(
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: widget.orderDate.toString(),
+                              style: AppTextStyles.medium14.copyWith(
+                                fontSize: 16,
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
