@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class ImagePickerModalItem extends StatelessWidget {
   final String title;
@@ -16,18 +15,21 @@ class ImagePickerModalItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
       onTap: onPressed,
       leading: CircleAvatar(
         backgroundColor: const Color(0xFFE7E7E7),
         child: Icon(
           icon,
-          color: iconColor ?? Theme.of(context).colorScheme.primary,
+          color: iconColor ?? theme.colorScheme.primary,
         ),
       ),
       title: Text(
         title,
-        style: AppTextStyles.medium14.apply(color: Colors.black),
+        style: theme.textTheme.titleSmall!.apply(
+          color: Colors.black,
+        ),
       ),
     );
   }

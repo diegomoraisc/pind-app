@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/widgets/primary_button.dart';
 
 Future<dynamic> customModalBottomSheet({
@@ -28,7 +27,7 @@ Future<dynamic> customModalBottomSheet({
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
                 text,
-                style: AppTextStyles.medium14,
+                style: Theme.of(context).textTheme.titleSmall,
                 textAlign: TextAlign.center,
               ),
             ),

@@ -1,28 +1,18 @@
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pind_app/src/common/utils/validator.dart';
 import 'package:pind_app/src/common/widgets/custom_text_form_field.dart';
 
-Future<dynamic> customerFormDialog({
-  String? customerId,
+Future<dynamic> productFormDialog({
+  String? productId,
   required BuildContext context,
   required String title,
-  required String customerName,
-  required String nameHintText,
-  required TextEditingController nameFieldController,
-  required String cnpj,
-  required String cnpjHintText,
-  required TextEditingController cnpjFieldController,
-  required String customerAdress,
-  required String adressHintText,
-  required TextEditingController adressFieldController,
-  required String customerEmail,
-  required String emailHintText,
-  required TextEditingController emailFieldController,
-  required String customerPhoneNumber,
-  required String phoneNumberHintText,
-  required TextEditingController phoneNumberFieldController,
+  required String productName,
+  required String productHintText,
+  required String quantity,
+  required String quantityHintText,
+  required TextEditingController productFieldController,
+  required TextEditingController quantityFieldController,
   required String primaryButtonText,
   required String secondaryButtonText,
   required void Function(BuildContext dialogContext) onPrimaryButtonTapped,
@@ -31,14 +21,15 @@ Future<dynamic> customerFormDialog({
   return showDialog(
     context: context,
     builder: (ctx) {
-      final theme = Theme.of(context);
       final formKey = GlobalKey<FormState>();
+      final theme = Theme.of(ctx);
       return Dialog.fullscreen(
         backgroundColor: Colors.white,
         child: Form(
           key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 20, left: 20),
@@ -54,53 +45,21 @@ Future<dynamic> customerFormDialog({
                     child: Column(
                       children: [
                         CustomTextFormField(
-                          controller: nameFieldController,
-                          fieldName: customerName,
-                          hintText: nameHintText,
+                          controller: productFieldController,
+                          fieldName: productName,
+                          hintText: productHintText,
                           borderColor: theme.colorScheme.surface,
-                          keyboardType: TextInputType.name,
                           validator: Validator.validateName,
                         ),
                         CustomTextFormField(
-                          controller: cnpjFieldController,
-                          keyboardType: TextInputType.number,
-                          fieldName: cnpj,
-                          hintText: cnpjHintText,
+                          controller: quantityFieldController,
+                          fieldName: quantity,
+                          hintText: quantityHintText,
                           borderColor: theme.colorScheme.surface,
                           validator: Validator.validateEmptyField,
                           inputFormatters: [
-                            LengthLimitingTextInputFormatter(18),
+                            LengthLimitingTextInputFormatter(6),
                             FilteringTextInputFormatter.digitsOnly,
-                            CnpjInputFormatter(),
-                          ],
-                        ),
-                        CustomTextFormField(
-                          controller: adressFieldController,
-                          keyboardType: TextInputType.streetAddress,
-                          fieldName: customerAdress,
-                          hintText: adressHintText,
-                          validator: Validator.validateEmptyField,
-                          borderColor: theme.colorScheme.surface,
-                        ),
-                        CustomTextFormField(
-                          controller: emailFieldController,
-                          keyboardType: TextInputType.emailAddress,
-                          fieldName: customerEmail,
-                          hintText: emailHintText,
-                          validator: Validator.validateEmail,
-                          borderColor: theme.colorScheme.surface,
-                        ),
-                        CustomTextFormField(
-                          controller: phoneNumberFieldController,
-                          keyboardType: TextInputType.phone,
-                          fieldName: customerPhoneNumber,
-                          hintText: phoneNumberHintText,
-                          validator: Validator.validateEmptyField,
-                          borderColor: theme.colorScheme.surface,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(15),
-                            FilteringTextInputFormatter.digitsOnly,
-                            TelefoneInputFormatter(),
                           ],
                         ),
                       ],
@@ -148,8 +107,9 @@ Future<dynamic> customerFormDialog({
                         },
                         child: Text(
                           primaryButtonText,
-                          style: theme.textTheme.titleSmall!
-                              .apply(color: Colors.white),
+                          style: theme.textTheme.titleSmall!.apply(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

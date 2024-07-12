@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/features/auth/interactor/blocs/auth_bloc.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
 import 'package:pind_app/src/features/auth/interactor/events/auth_event.dart';
@@ -13,7 +12,7 @@ import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/src/common/widgets/custom_text_button.dart';
 import 'package:pind_app/src/common/widgets/custom_text_form_field.dart';
 import 'package:pind_app/src/common/widgets/primary_button.dart';
-import 'package:pind_app/src/common/utils/auth_validator.dart';
+import 'package:pind_app/src/common/utils/validator.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -72,13 +71,14 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                 left: 24,
                 top: 72,
               ),
@@ -86,17 +86,17 @@ class _SignInPageState extends State<SignInPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       bottom: 8,
                     ),
                     child: Text(
                       "Faça o login na sua conta.",
-                      style: AppTextStyles.semiBold32,
+                      style: theme.textTheme.headlineLarge,
                     ),
                   ),
                   Text(
                     "Entre agora e mantenha seu negócio em movimento",
-                    style: AppTextStyles.medium14,
+                    style: theme.textTheme.titleSmall,
                   ),
                 ],
               ),
@@ -115,14 +115,14 @@ class _SignInPageState extends State<SignInPage> {
                       fieldName: "E-mail",
                       hintText: "Digite seu e-mail",
                       controller: _emailController,
-                      validator: AuthValidator.validateEmail,
+                      validator: Validator.validateEmail,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     CustomTextFormField(
                       fieldName: "Senha",
                       hintText: "Digite sua senha",
                       controller: _passwordController,
-                      validator: AuthValidator.validatePassword,
+                      validator: Validator.validatePassword,
                       obscureText: isHidden,
                       suffixIcon: GestureDetector(
                         onTap: () => setState(() {

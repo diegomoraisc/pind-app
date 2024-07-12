@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
-import 'package:pind_app/src/features/stock/ui/widgets/product_form.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
+import 'package:pind_app/src/features/stock/ui/widgets/product_form_dialog.dart';
 import 'package:pind_app/src/features/stock/ui/widgets/stock_item.dart';
 import 'package:pind_app/src/features/stock/interactor/blocs/product_bloc.dart';
 import 'package:pind_app/src/features/stock/interactor/entities/product_entity.dart';
@@ -42,59 +41,6 @@ class _StockListPageState extends State<StockListPage> {
     _quantityController.clear();
   }
 
-  void _addOrEditProduct(
-    BuildContext context, {
-    String? productId,
-  }) {
-    showDialog(
-      context: context,
-      builder: (context) => ProductForm(
-        title: productId == null ? "Novo Produto" : "Editar Produto",
-        productName: "Nome",
-        productHintText: "Nome do produto",
-        productFieldController: _nameController,
-        quantity: "Quantidade",
-        quantityHintText: "Quantidade (kg)",
-        quantityFieldController: _quantityController,
-        primaryButtonText: productId == null ? "Adicionar" : "Editar",
-        secondaryButtonText: "Cancelar",
-        onPrimaryButtonTapped: () {
-          final name = _nameController.text;
-          final quantity = _quantityController.text;
-          if (productId != null) {
-            _bloc.add(
-              UpdateProductEvent(
-                id: productId,
-                updatedProduct: ProductEntity(
-                  id: productId,
-                  name: name,
-                  quantity: quantity,
-                ),
-              ),
-            );
-          } else {
-            _bloc.add(
-              AddProductEvent(
-                product: ProductEntity(
-                  id: const Uuid().v1(),
-                  name: name,
-                  quantity: quantity,
-                ),
-              ),
-            );
-          }
-          context.pop();
-          _clearTextFields();
-          _bloc.add(GetAllProductsEvent());
-        },
-        onSecondaryButtonTapped: () {
-          context.pop();
-          _clearTextFields();
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -121,9 +67,41 @@ class _StockListPageState extends State<StockListPage> {
                   onEdit: (BuildContext context) {
                     _nameController.text = product.name;
                     _quantityController.text = product.quantity;
-                    _addOrEditProduct(
-                      context,
+                    productFormDialog(
+                      context: context,
                       productId: product.id,
+                      title: "Editar Produto",
+                      productName: "Nome",
+                      productHintText: "Nome do produto",
+                      quantity: "Quantidade",
+                      quantityHintText: "Quantidade (kg)",
+                      productFieldController: _nameController,
+                      quantityFieldController: _quantityController,
+                      primaryButtonText: "Editar",
+                      secondaryButtonText: "Cancelar",
+                      onPrimaryButtonTapped: (dialogContext) {
+                        final name = _nameController.text;
+                        final quantity = _quantityController.text;
+                        if (product.id != null) {
+                          _bloc.add(
+                            UpdateProductEvent(
+                              id: product.id!,
+                              updatedProduct: ProductEntity(
+                                id: product.id,
+                                name: name,
+                                quantity: quantity,
+                              ),
+                            ),
+                          );
+                        }
+                        dialogContext.pop();
+                        _clearTextFields();
+                        _bloc.add(GetAllProductsEvent());
+                      },
+                      onSecondaryButtonTapped: (dialogContext) {
+                        dialogContext.pop();
+                        _clearTextFields();
+                      },
                     );
                   },
                   onRemove: (BuildContext context) {
@@ -139,7 +117,7 @@ class _StockListPageState extends State<StockListPage> {
             return Center(
               child: Text(
                 message,
-                style: AppTextStyles.medium14,
+                style: theme.textTheme.titleSmall,
               ),
             );
           } else {
@@ -148,7 +126,40 @@ class _StockListPageState extends State<StockListPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _addOrEditProduct(context),
+        onPressed: () {
+          productFormDialog(
+            context: context,
+            title: "Novo Produto",
+            productName: "Nome",
+            productHintText: "Nome do produto",
+            quantity: "Quantidade",
+            quantityHintText: "Quantidade (kg)",
+            productFieldController: _nameController,
+            quantityFieldController: _quantityController,
+            primaryButtonText: "Adicionar",
+            secondaryButtonText: "Cancelar",
+            onPrimaryButtonTapped: (dialogContext) {
+              final name = _nameController.text;
+              final quantity = _quantityController.text;
+              _bloc.add(
+                AddProductEvent(
+                  product: ProductEntity(
+                    id: const Uuid().v1(),
+                    name: name,
+                    quantity: quantity,
+                  ),
+                ),
+              );
+              dialogContext.pop();
+              _clearTextFields();
+              _bloc.add(GetAllProductsEvent());
+            },
+            onSecondaryButtonTapped: (dialogContext) {
+              dialogContext.pop();
+              _clearTextFields();
+            },
+          );
+        },
         backgroundColor: theme.colorScheme.primary,
         child: const Icon(
           Icons.add,

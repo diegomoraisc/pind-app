@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/features/auth/interactor/blocs/auth_bloc.dart';
 import 'package:pind_app/src/features/auth/interactor/events/auth_event.dart';
 import 'package:pind_app/src/features/auth/interactor/states/auth_state.dart';
@@ -12,7 +11,7 @@ import 'package:pind_app/src/common/widgets/custom_modal_bottom_sheet.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/src/common/widgets/custom_text_form_field.dart';
 import 'package:pind_app/src/common/widgets/primary_button.dart';
-import 'package:pind_app/src/common/utils/auth_validator.dart';
+import 'package:pind_app/src/common/utils/validator.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -74,13 +73,14 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                 top: 72,
                 left: 24,
               ),
@@ -88,15 +88,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
                       "Junte-se a nós. Crie sua conta agora.",
-                      style: AppTextStyles.semiBold32,
+                      style: theme.textTheme.headlineLarge,
                     ),
                   ),
                   Text(
                     "Vamos começar a gerenciar seu estoque! Registre-se agora",
-                    style: AppTextStyles.medium14,
+                    style: theme.textTheme.titleSmall,
                   ),
                 ],
               ),
@@ -115,21 +115,21 @@ class _SignUpPageState extends State<SignUpPage> {
                       fieldName: "Nome Completo",
                       hintText: "Digite seu nome completo",
                       controller: _nameController,
-                      validator: AuthValidator.validateName,
+                      validator: Validator.validateName,
                       keyboardType: TextInputType.name,
                     ),
                     CustomTextFormField(
                       fieldName: "E-mail",
                       hintText: "Digite seu e-mail",
                       controller: _emailController,
-                      validator: AuthValidator.validateEmail,
+                      validator: Validator.validateEmail,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     CustomTextFormField(
                       fieldName: "Senha",
                       hintText: "Digite sua senha",
                       controller: _passwordController,
-                      validator: AuthValidator.validatePassword,
+                      validator: Validator.validatePassword,
                       helperText:
                           "Por favor, escolha uma senha com pelo menos 8 caracteres, incluindo pelo menos uma letra maiúscula e um número",
                       obscureText: isPasswordHidden,
@@ -145,8 +145,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     CustomTextFormField(
                       fieldName: "Confirmar Senha",
                       hintText: "Confirme sua senha",
-                      validator: (value) =>
-                          AuthValidator.validateConfirmPassword(
+                      validator: (value) => Validator.validateConfirmPassword(
                         value,
                         _passwordController.text,
                       ),

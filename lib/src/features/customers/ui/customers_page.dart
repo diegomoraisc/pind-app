@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/src/features/customers/interactor/blocs/customer_bloc.dart';
@@ -52,91 +51,6 @@ class _CustomersPageState extends State<CustomersPage> {
     _phoneController.clear();
   }
 
-  void _showCustomerInfo(BuildContext context,
-      {required CustomerEntity customer}) {
-    showDialog(
-      context: context,
-      builder: (builder) => CustomerInfo(
-        title: customer.name,
-        customerName: customer.name,
-        cnpj: customer.cnpj,
-        customerAdress: customer.adress,
-        customerEmail: customer.email,
-        customerPhoneNumber: customer.phoneNumber,
-      ),
-    );
-  }
-
-  void _addOrEditCustomer(BuildContext context, {String? customerId}) {
-    showDialog(
-      context: context,
-      builder: (context) => CustomerForm(
-        title: customerId == null
-            ? "Adicionar novo cliente"
-            : "Editar informações de um cliente",
-        customerName: "Nome",
-        nameHintText: "Nome do cliente",
-        nameFieldController: _nameController,
-        cnpj: "CNPJ",
-        cnpjHintText: "CNPJ do cliente",
-        cnpjFieldController: _cnpjController,
-        customerAdress: "Endereço",
-        adressHintText: "Endereço do cliente",
-        adressFieldController: _adressController,
-        customerEmail: "Email",
-        emailHintText: "Email do cliente",
-        emailFieldController: _emailController,
-        customerPhoneNumber: "Telefone",
-        phoneNumberHintText: "Telefone para contato",
-        phoneNumberFieldController: _phoneController,
-        primaryButtonText: customerId == null ? "Adicionar" : "Editar",
-        secondaryButtonText: "Cancelar",
-        onPrimaryButtonTapped: () {
-          final name = _nameController.text;
-          final cnpj = _cnpjController.text;
-          final adress = _adressController.text;
-          final email = _emailController.text;
-          final phoneNumber = _phoneController.text;
-          if (customerId != null) {
-            _bloc.add(
-              UpdateCustomerEvent(
-                id: customerId,
-                updatedCustomer: CustomerEntity(
-                  id: customerId,
-                  name: name,
-                  cnpj: cnpj,
-                  adress: adress,
-                  email: email,
-                  phoneNumber: phoneNumber,
-                ),
-              ),
-            );
-          } else {
-            _bloc.add(
-              AddCustomerEvent(
-                customer: CustomerEntity(
-                  id: const Uuid().v1(),
-                  name: name,
-                  cnpj: cnpj,
-                  adress: adress,
-                  email: email,
-                  phoneNumber: phoneNumber,
-                ),
-              ),
-            );
-          }
-          context.pop();
-          _clearTextFields();
-          _bloc.add(GetAllCustomersEvent());
-        },
-        onSecondaryButtonTapped: () {
-          context.pop();
-          _clearTextFields();
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -160,15 +74,76 @@ class _CustomersPageState extends State<CustomersPage> {
                 return CustomerCard(
                   name: customer.name,
                   adress: customer.adress,
-                  onTap: () =>
-                      _showCustomerInfo(context, customer: customer),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (builder) => CustomerInfo(
+                        title: customer.name,
+                        customerName: customer.name,
+                        cnpj: customer.cnpj,
+                        customerAdress: customer.adress,
+                        customerEmail: customer.email,
+                        customerPhoneNumber: customer.phoneNumber,
+                      ),
+                    );
+                  },
                   onEdit: (context) {
                     _nameController.text = customer.name;
                     _cnpjController.text = customer.cnpj;
                     _adressController.text = customer.adress;
                     _emailController.text = customer.email;
                     _phoneController.text = customer.phoneNumber;
-                    _addOrEditCustomer(context, customerId: customer.id);
+                    customerFormDialog(
+                      context: context,
+                      customerId: customer.id,
+                      title: "Editar informações de um cliente",
+                      customerName: "Nome",
+                      nameHintText: "Nome do cliente",
+                      nameFieldController: _nameController,
+                      cnpj: "CNPJ",
+                      cnpjHintText: "CNPJ do cliente",
+                      cnpjFieldController: _cnpjController,
+                      customerAdress: "Endereço",
+                      adressHintText: "Endereço do cliente",
+                      adressFieldController: _adressController,
+                      customerEmail: "Email",
+                      emailHintText: "Email do cliente",
+                      emailFieldController: _emailController,
+                      customerPhoneNumber: "Telefone",
+                      phoneNumberHintText: "Telefone para contato",
+                      phoneNumberFieldController: _phoneController,
+                      primaryButtonText: "Editar",
+                      secondaryButtonText: "Cancelar",
+                      onPrimaryButtonTapped: (dialogContext) {
+                        final name = _nameController.text;
+                        final cnpj = _cnpjController.text;
+                        final adress = _adressController.text;
+                        final email = _emailController.text;
+                        final phoneNumber = _phoneController.text;
+                        if (customer.id != null) {
+                          _bloc.add(
+                            UpdateCustomerEvent(
+                              id: customer.id!,
+                              updatedCustomer: CustomerEntity(
+                                id: customer.id,
+                                name: name,
+                                cnpj: cnpj,
+                                adress: adress,
+                                email: email,
+                                phoneNumber: phoneNumber,
+                              ),
+                            ),
+                          );
+                        }
+                        dialogContext.pop();
+                        _clearTextFields();
+                        _bloc.add(GetAllCustomersEvent());
+                      },
+                      onSecondaryButtonTapped: (dialogContext) {
+                        dialogContext.pop();
+                        _clearTextFields();
+                      },
+                    );
                   },
                   onRemove: (context) {
                     _bloc.add(RemoveCustomerEvent(id: customer.id!));
@@ -182,7 +157,7 @@ class _CustomersPageState extends State<CustomersPage> {
             return Center(
               child: Text(
                 message,
-                style: AppTextStyles.medium14,
+                style: theme.textTheme.titleSmall,
               ),
             );
           } else {
@@ -191,7 +166,55 @@ class _CustomersPageState extends State<CustomersPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _addOrEditCustomer(context),
+        onPressed: () {
+          customerFormDialog(
+            context: context,
+            title: "Adicionar novo cliente",
+            customerName: "Nome",
+            nameHintText: "Nome do cliente",
+            nameFieldController: _nameController,
+            cnpj: "CNPJ",
+            cnpjHintText: "CNPJ do cliente",
+            cnpjFieldController: _cnpjController,
+            customerAdress: "Endereço",
+            adressHintText: "Endereço do cliente",
+            adressFieldController: _adressController,
+            customerEmail: "Email",
+            emailHintText: "Email do cliente",
+            emailFieldController: _emailController,
+            customerPhoneNumber: "Telefone",
+            phoneNumberHintText: "Telefone para contato",
+            phoneNumberFieldController: _phoneController,
+            primaryButtonText: "Adicionar",
+            secondaryButtonText: "Cancelar",
+            onPrimaryButtonTapped: (dialogContext) {
+              final name = _nameController.text;
+              final cnpj = _cnpjController.text;
+              final adress = _adressController.text;
+              final email = _emailController.text;
+              final phoneNumber = _phoneController.text;
+              _bloc.add(
+                AddCustomerEvent(
+                  customer: CustomerEntity(
+                    id: const Uuid().v1(),
+                    name: name,
+                    cnpj: cnpj,
+                    adress: adress,
+                    email: email,
+                    phoneNumber: phoneNumber,
+                  ),
+                ),
+              );
+              dialogContext.pop();
+              _clearTextFields();
+              _bloc.add(GetAllCustomersEvent());
+            },
+            onSecondaryButtonTapped: (dialogContext) {
+              dialogContext.pop();
+              _clearTextFields();
+            },
+          );
+        },
         backgroundColor: theme.colorScheme.primary,
         child: const Icon(
           Icons.add,

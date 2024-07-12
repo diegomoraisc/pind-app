@@ -21,3 +21,19 @@ class RemoveOrderEvent implements OrderEvent {
 }
 
 class GetAllOrdersEvent implements OrderEvent {}
+
+class GetCustomerNameEvent implements OrderEvent {
+  final String customerId;
+
+  const GetCustomerNameEvent({
+    required this.customerId,
+  });
+}
+
+class GetProductNameEvent implements OrderEvent {
+  final String productId;
+
+  const GetProductNameEvent({
+    required this.productId,
+  });
+}

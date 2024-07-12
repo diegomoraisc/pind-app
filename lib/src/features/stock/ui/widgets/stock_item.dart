@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:pind_app/src/common/constants/app_colors.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class StockItem extends StatefulWidget {
   final String name;
@@ -37,17 +35,20 @@ class _StockItemState extends State<StockItem> {
 
   Color stockColor(double quantity) {
     if (quantity > 100) {
-      return AppColors.primary;
+      return Theme.of(context).colorScheme.primary;
     } else if (quantity > 30) {
       return Colors.amber.shade300;
+    } else if (quantity >= 1) {
+      return Theme.of(context).colorScheme.error;
     } else {
-      return Colors.red;
+      return Colors.grey;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    BorderRadius borderRadius = BorderRadius.circular(12);
+    final theme = Theme.of(context);
+    final borderRadius = BorderRadius.circular(12);
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -89,7 +90,7 @@ class _StockItemState extends State<StockItem> {
                     ),
                     onPressed: widget.onRemove,
                     icon: Icons.delete,
-                    foregroundColor: Colors.red,
+                    foregroundColor: theme.colorScheme.error,
                     backgroundColor: Colors.transparent,
                   ),
                 ],
@@ -112,13 +113,13 @@ class _StockItemState extends State<StockItem> {
                     ),
                     title: Text(
                       widget.name,
-                      style: AppTextStyles.semiBold20.apply(
-                        color: Theme.of(context).colorScheme.primary,
+                      style: theme.textTheme.titleLarge!.apply(
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                     subtitle: Text(
                       "${widget.quantity.toStringAsFixed(1)} (kg)",
-                      style: AppTextStyles.medium14,
+                      style: theme.textTheme.titleSmall,
                     ),
                   ),
                 ),

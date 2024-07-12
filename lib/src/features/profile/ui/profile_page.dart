@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/features/auth/interactor/blocs/auth_bloc.dart';
 import 'package:pind_app/src/features/auth/interactor/events/auth_event.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
@@ -28,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -67,11 +67,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Text(
                 widget.userName,
-                style: AppTextStyles.semiBold20.apply(color: Colors.black),
+                style: theme.textTheme.titleLarge!.apply(color: Colors.black),
               ),
               Text(
                 widget.email,
-                style: AppTextStyles.medium14,
+                style: theme.textTheme.titleSmall,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24),
@@ -101,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
               width: MediaQuery.of(context).size.width,
               height: 50,
               textColor: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: theme.colorScheme.error,
               text: "Sair",
               onPressed: () {
                 bloc.add(LogoutAuthEvent());

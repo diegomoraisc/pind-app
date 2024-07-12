@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class CustomTextButton extends StatelessWidget {
   final String text;
@@ -12,14 +11,15 @@ class CustomTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Align(
       alignment: AlignmentDirectional.centerEnd,
       child: TextButton(
         onPressed: onPressed,
         child: Text(
           text,
-          style: AppTextStyles.medium14.apply(
-            color: Theme.of(context).colorScheme.primary,
+          style: theme.textTheme.titleSmall!.apply(
+            color: theme.colorScheme.primary,
           ),
         ),
       ),

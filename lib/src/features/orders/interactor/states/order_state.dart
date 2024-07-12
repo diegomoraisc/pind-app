@@ -26,6 +26,18 @@ class RemovedOrderState implements OrderState {
   const RemovedOrderState(this.id);
 }
 
+class CustomerNameLoadedState implements OrderState {
+  final String name;
+
+  const CustomerNameLoadedState(this.name);
+}
+
+class ProductNameLoadedState implements OrderState {
+  final String name;
+
+  const ProductNameLoadedState(this.name);
+}
+
 class ErrorOrderState implements OrderState {
   final String message;
 

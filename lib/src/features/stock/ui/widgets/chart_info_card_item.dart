@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class ChartInfoCardItem extends StatelessWidget {
   final String title;
@@ -14,6 +13,7 @@ class ChartInfoCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: Container(
         height: 95,
@@ -32,14 +32,16 @@ class ChartInfoCardItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTextStyles.medium14.apply(color: Colors.grey[750]),
+                style: theme.textTheme.titleSmall!.apply(
+                  color: Colors.grey[750],
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     subTitle,
-                    style: AppTextStyles.semiBold20,
+                    style: theme.textTheme.titleLarge,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),

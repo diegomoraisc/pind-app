@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class OrderExpansionTile extends StatefulWidget {
   final String title;
@@ -75,14 +74,14 @@ class _OrderExpansionTileState extends State<OrderExpansionTile> {
                   title: RichText(
                     text: TextSpan(
                       text: "Pedido",
-                      style: AppTextStyles.semiBold20.copyWith(
+                      style: theme.textTheme.titleLarge!.copyWith(
                         fontSize: 18,
                         color: Colors.grey[850],
                       ),
                       children: [
                         TextSpan(
                           text: " #${widget.title}",
-                          style: AppTextStyles.semiBold20.copyWith(
+                          style: theme.textTheme.titleLarge!.copyWith(
                             fontSize: 18,
                             color: theme.colorScheme.primary,
                           ),
@@ -99,13 +98,13 @@ class _OrderExpansionTileState extends State<OrderExpansionTile> {
                       subtitle: RichText(
                         text: TextSpan(
                           text: "Quantidade: ",
-                          style: AppTextStyles.semiBold20.copyWith(
+                          style: theme.textTheme.titleLarge!.copyWith(
                             fontSize: 16,
                           ),
                           children: [
                             TextSpan(
                               text: "${widget.quantity} (kg)",
-                              style: AppTextStyles.medium14.copyWith(
+                              style: theme.textTheme.titleSmall!.copyWith(
                                 fontSize: 16,
                               ),
                             ),
@@ -117,13 +116,13 @@ class _OrderExpansionTileState extends State<OrderExpansionTile> {
                       title: RichText(
                         text: TextSpan(
                           text: "Data do pedido: ",
-                          style: AppTextStyles.semiBold20.copyWith(
+                          style: theme.textTheme.titleLarge!.copyWith(
                             fontSize: 16,
                           ),
                           children: [
                             TextSpan(
                               text: widget.orderDate.toString(),
-                              style: AppTextStyles.medium14.copyWith(
+                              style: theme.textTheme.titleSmall!.copyWith(
                                 fontSize: 16,
                               ),
                             )

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_colors.dart';
-
-import '../constants/app_text_styles.dart';
 
 class CustomDivider extends StatelessWidget {
   final String text;
@@ -12,6 +9,7 @@ class CustomDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       child: Row(
@@ -25,12 +23,12 @@ class CustomDivider extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               text,
-              style: AppTextStyles.medium14,
+              style: theme.textTheme.titleSmall,
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Divider(
-              color: AppColors.grey,
+              color: theme.colorScheme.surface,
             ),
           ),
         ],

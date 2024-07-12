@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pind_app/src/common/database/firestore_db.dart';
+import 'package:pind_app/src/features/customers/data/adapters/customer_adapter.dart';
 import 'package:pind_app/src/features/orders/data/adapters/order_adapter.dart';
 import 'package:pind_app/src/features/orders/interactor/entities/order_entity.dart';
 import 'package:pind_app/src/features/orders/interactor/exceptions/order_exception.dart';
@@ -69,5 +70,31 @@ class OrderDbRepository implements OrderRepository {
     } catch (e) {
       throw const UnknownException();
     }
+  }
+
+  @override
+  Future<OrderState> getCustomerName(String id) async {
+    final customerSnapshot =
+        await FirestoreDb.get().collection('customers').doc(id).get();
+
+    if (customerSnapshot.exists) {
+      final customerName = CustomerAdapter.fromDocument(customerSnapshot).name;
+      return CustomerNameLoadedState(customerName);
+    }
+
+    return ErrorOrderState(const UnknownCustomerException().message);
+  }
+
+  @override
+  Future<OrderState> getProductName(String id) async {
+    final productSnapshot =
+        await FirestoreDb.get().collection('products').doc(id).get();
+
+    if (productSnapshot.exists) {
+      final productName = ProductAdapter.fromDocument(productSnapshot).name;
+      return ProductNameLoadedState(productName);
+    }
+
+    return ErrorOrderState(const UnknownProductException().message);
   }
 }

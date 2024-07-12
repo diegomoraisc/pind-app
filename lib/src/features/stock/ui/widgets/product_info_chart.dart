@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class ProductInfoChart extends StatefulWidget {
   final String productName;
@@ -59,6 +58,7 @@ class ProductInfoChartState extends State<ProductInfoChart>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     bool isVisible =
         widget.productName.isNotEmpty && widget.productQuantity! > 0.0;
 
@@ -90,13 +90,13 @@ class ProductInfoChartState extends State<ProductInfoChart>
           children: [
             Text(
               widget.productName,
-              style: AppTextStyles.semiBold20,
+              style: theme.textTheme.titleLarge,
             ),
             Text(
               widget.productQuantity != null && widget.productQuantity! > 0.0
                   ? "${widget.productQuantity!.toStringAsFixed(0)} kg"
                   : "",
-              style: AppTextStyles.medium14,
+              style: theme.textTheme.titleSmall,
             ),
           ],
         ),

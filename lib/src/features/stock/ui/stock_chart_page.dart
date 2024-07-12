@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/utils/locator.dart';
 import 'package:pind_app/src/common/widgets/custom_progress_indicator.dart';
 import 'package:pind_app/src/features/customers/interactor/blocs/customer_bloc.dart';
@@ -19,7 +18,7 @@ import 'package:pind_app/src/features/stock/interactor/events/product_event.dart
 import 'package:pind_app/src/features/stock/interactor/states/product_state.dart';
 
 class StockChartPage extends StatefulWidget {
-  const StockChartPage({super.key});
+  const StockChartPage({Key? key}) : super(key: key);
 
   @override
   State<StockChartPage> createState() => _StockChartPageState();
@@ -45,33 +44,12 @@ class _StockChartPageState extends State<StockChartPage> {
     _orderBloc.add(GetAllOrdersEvent());
   }
 
-  void _updateClientCount(int count) {
-    Future.microtask(() {
-      setState(() {
-        clientCount = count;
-      });
-    });
-  }
-
-  void _updateProducts(List<ProductEntity> newProducts) {
-    Future.microtask(() {
-      setState(() {
-        products = newProducts;
-        totalQuantity = products.isNotEmpty
-            ? products
-                .map((product) => double.tryParse(product.quantity) ?? 0.0)
-                .reduce((value, element) => value + element)
-            : 0.0;
-      });
-    });
-  }
-
-  void _updateOrdersCount(int count) {
-    Future.microtask(() {
-      setState(() {
-        ordersCount = count;
-      });
-    });
+  @override
+  void dispose() {
+    _productBloc.close();
+    _clientBloc.close();
+    _orderBloc.close();
+    super.dispose();
   }
 
   @override
@@ -85,7 +63,19 @@ class _StockChartPageState extends State<StockChartPage> {
             bloc: _productBloc,
             listener: (context, state) {
               if (state is LoadedProductState) {
-                _updateProducts(state.products);
+                setState(() {
+                  products = state.products.where((product) {
+                    final quantity = double.tryParse(product.quantity) ?? 0.0;
+                    return quantity > 0.0;
+                  }).toList();
+
+                  totalQuantity = products.isNotEmpty
+                      ? products
+                          .map((product) =>
+                              double.tryParse(product.quantity) ?? 0.0)
+                          .reduce((value, element) => value + element)
+                      : 0.0;
+                });
               }
             },
           ),
@@ -93,7 +83,9 @@ class _StockChartPageState extends State<StockChartPage> {
             bloc: _clientBloc,
             listener: (context, state) {
               if (state is LoadedCustomerState) {
-                _updateClientCount(state.customers.length);
+                setState(() {
+                  clientCount = state.customers.length;
+                });
               }
             },
           ),
@@ -101,7 +93,9 @@ class _StockChartPageState extends State<StockChartPage> {
             bloc: _orderBloc,
             listener: (context, state) {
               if (state is LoadedOrderState) {
-                _updateOrdersCount(state.orders.length);
+                setState(() {
+                  ordersCount = state.orders.length;
+                });
               }
             },
           ),
@@ -116,7 +110,6 @@ class _StockChartPageState extends State<StockChartPage> {
                 ),
               );
             } else if (state is LoadedProductState) {
-              _updateProducts(state.products);
               return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: Column(
@@ -127,22 +120,20 @@ class _StockChartPageState extends State<StockChartPage> {
                       productName: productName,
                       productQuantity: productQuantity,
                       onSectionTouched: (index) {
-                        setState(
-                          () {
-                            touchedIndex = index;
-                            if (index != null &&
-                                index >= 0 &&
-                                index < products.length) {
-                              productName = products[index].name;
-                              productQuantity =
-                                  double.tryParse(products[index].quantity) ??
-                                      0.0;
-                            } else {
-                              productName = null;
-                              productQuantity = null;
-                            }
-                          },
-                        );
+                        setState(() {
+                          touchedIndex = index;
+                          if (index != null &&
+                              index >= 0 &&
+                              index < products.length) {
+                            productName = products[index].name;
+                            productQuantity =
+                                double.tryParse(products[index].quantity) ??
+                                    0.0;
+                          } else {
+                            productName = null;
+                            productQuantity = null;
+                          }
+                        });
                       },
                     ),
                     Padding(
@@ -188,7 +179,7 @@ class _StockChartPageState extends State<StockChartPage> {
               return Center(
                 child: Text(
                   message,
-                  style: AppTextStyles.medium14,
+                  style: theme.textTheme.titleSmall,
                 ),
               );
             } else {

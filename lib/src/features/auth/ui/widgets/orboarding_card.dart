@@ -1,6 +1,5 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class OnboardingCard extends StatelessWidget {
   final String title;
@@ -15,11 +14,12 @@ class OnboardingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 400,
       decoration: ShapeDecoration(
-        color: Theme.of(context).colorScheme.primary,
+        color: theme.colorScheme.primary,
         shape: SmoothRectangleBorder(
           borderRadius: SmoothBorderRadius(
             cornerRadius: 48,
@@ -41,7 +41,8 @@ class OnboardingCard extends StatelessWidget {
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.semiBold32.apply(color: Colors.white),
+                  style:
+                      theme.textTheme.headlineLarge!.apply(color: Colors.white),
                 ),
               ),
               Padding(
@@ -52,7 +53,7 @@ class OnboardingCard extends StatelessWidget {
                 child: Text(
                   description,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.medium14.apply(
+                  style: theme.textTheme.titleSmall!.apply(
                     color: Colors.white.withOpacity(0.8),
                   ),
                 ),

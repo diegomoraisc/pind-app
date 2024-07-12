@@ -1,6 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
@@ -13,6 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? obscureText;
   final String? helperText;
   final TextStyle? helperStyle;
+  final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String>? validator;
   final defaultBorder = const OutlineInputBorder(
     borderRadius: BorderRadius.all(
@@ -32,10 +32,12 @@ class CustomTextFormField extends StatelessWidget {
     this.helperText,
     this.borderColor,
     this.helperStyle,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Column(
@@ -47,13 +49,14 @@ class CustomTextFormField extends StatelessWidget {
             ),
             child: Text(
               fieldName,
-              style: AppTextStyles.medium14.apply(color: fieldNameColor),
+              style: theme.textTheme.titleSmall!.apply(color: fieldNameColor),
             ),
           ),
           TextFormField(
             controller: controller,
             validator: validator,
             keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
             obscureText: obscureText ?? false,
             decoration: InputDecoration(
               suffixIcon: suffixIcon,
@@ -61,7 +64,7 @@ class CustomTextFormField extends StatelessWidget {
               helperStyle: helperStyle,
               helperMaxLines: 3,
               hintText: hintText,
-              hintStyle: AppTextStyles.medium14,
+              hintStyle: theme.textTheme.titleSmall,
               border: defaultBorder,
               enabledBorder: defaultBorder.copyWith(
                 borderSide: BorderSide(

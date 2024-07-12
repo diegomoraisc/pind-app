@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class CustomInlineTextButton extends StatelessWidget {
   final String text;
@@ -16,6 +15,7 @@ class CustomInlineTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50.0),
       child: TextButton(
@@ -27,12 +27,14 @@ class CustomInlineTextButton extends StatelessWidget {
               padding: const EdgeInsets.only(right: 4.0),
               child: Text(
                 text,
-                style: AppTextStyles.medium14,
+                style: theme.textTheme.titleSmall,
               ),
             ),
             Text(
               textButton,
-              style: AppTextStyles.medium14.apply(color: textColor),
+              style: theme.textTheme.titleSmall!.apply(
+                color: textColor,
+              ),
             ),
           ],
         ),

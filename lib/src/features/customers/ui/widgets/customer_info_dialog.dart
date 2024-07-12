@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 import 'package:pind_app/src/common/widgets/box_text.dart';
 
 class CustomerInfo extends StatelessWidget {
@@ -23,6 +22,7 @@ class CustomerInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Dialog.fullscreen(
       backgroundColor: Colors.white,
       child: SingleChildScrollView(
@@ -46,7 +46,7 @@ class CustomerInfo extends StatelessWidget {
                   ),
                   Text(
                     title.toUpperCase(),
-                    style: AppTextStyles.medium14,
+                    style: theme.textTheme.titleSmall,
                   ),
                 ],
               ),
@@ -62,7 +62,7 @@ class CustomerInfo extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           "Cliente",
-                          style: AppTextStyles.medium14.apply(
+                          style: theme.textTheme.titleSmall!.apply(
                             color: Colors.black,
                           ),
                         ),
@@ -79,7 +79,7 @@ class CustomerInfo extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           "CNPJ",
-                          style: AppTextStyles.medium14.apply(
+                          style: theme.textTheme.titleSmall!.apply(
                             color: Colors.black,
                           ),
                         ),
@@ -96,7 +96,7 @@ class CustomerInfo extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           "Endereço",
-                          style: AppTextStyles.medium14.apply(
+                          style: theme.textTheme.titleSmall!.apply(
                             color: Colors.black,
                           ),
                         ),
@@ -113,7 +113,7 @@ class CustomerInfo extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           "E-mail",
-                          style: AppTextStyles.medium14.apply(
+                          style: theme.textTheme.titleSmall!.apply(
                             color: Colors.black,
                           ),
                         ),
@@ -130,7 +130,7 @@ class CustomerInfo extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           "Telefone",
-                          style: AppTextStyles.medium14.apply(
+                          style: theme.textTheme.titleSmall!.apply(
                             color: Colors.black,
                           ),
                         ),

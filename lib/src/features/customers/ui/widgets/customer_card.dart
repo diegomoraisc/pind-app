@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class CustomerCard extends StatelessWidget {
   final String name;
@@ -61,7 +60,7 @@ class CustomerCard extends StatelessWidget {
                     ),
                     onPressed: onRemove,
                     icon: Icons.delete,
-                    foregroundColor: Colors.red,
+                    foregroundColor: theme.colorScheme.error,
                     backgroundColor: Colors.transparent,
                   ),
                 ],
@@ -84,13 +83,13 @@ class CustomerCard extends StatelessWidget {
                     ),
                     title: Text(
                       name,
-                      style: AppTextStyles.semiBold20.apply(
+                      style: theme.textTheme.titleLarge!.apply(
                         color: theme.colorScheme.primary,
                       ),
                     ),
                     subtitle: Text(
                       adress,
-                      style: AppTextStyles.medium14,
+                      style: theme.textTheme.titleSmall,
                     ),
                     trailing: Icon(
                       Icons.info_rounded,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pind_app/src/common/constants/app_text_styles.dart';
 
 class CustomListTile extends StatelessWidget {
   final String title;
@@ -14,6 +13,7 @@ class CustomListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(
         left: 10,
@@ -34,13 +34,13 @@ class CustomListTile extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: AppTextStyles.medium14.apply(color: Colors.black),
+          style: theme.textTheme.titleSmall!.apply(color: Colors.black),
         ),
         trailing: const Icon(
           Icons.keyboard_arrow_right_rounded,
           size: 30,
         ),
-        onTap: () {},
+        onTap: onPressed,
       ),
     );
   }

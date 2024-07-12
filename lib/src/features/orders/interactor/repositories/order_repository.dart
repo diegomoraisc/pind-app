@@ -7,4 +7,8 @@ abstract class OrderRepository {
   Future<OrderState> removeOrder(String id);
 
   Future<OrderState> getAllOrders();
+
+  Future<OrderState> getCustomerName(String id);
+
+  Future<OrderState> getProductName(String id);
 }
